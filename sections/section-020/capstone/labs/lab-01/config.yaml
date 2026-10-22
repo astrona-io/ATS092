@@ -1,0 +1,59 @@
+# Fix An Authenticator That Blocks The Wrong Users
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-092-capstone-020"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1, the provider and Maven volumes and the tester pod, and creates the realm inventory"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-092-capstone-020-setup"
+      description: "Builds an authenticator with an inverted check and binds its flow to the whole realm instead of to inventory-cli"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-flow-wired"
+      description: "Confirms the authenticator is a REQUIRED step of direct-grant-with-department, bound to inventory-cli only"
+      type: "file"
+      source: "validation/validate-flow-wired.sh"
+    - name: "validate-alice-gets-token"
+      description: "Confirms alice, who has a department, gets a token through inventory-cli"
+      type: "file"
+      source: "validation/validate-alice-gets-token.sh"
+    - name: "validate-bob-refused"
+      description: "Confirms bob, who has no department, is refused by the flow"
+      type: "file"
+      source: "validation/validate-bob-refused.sh"
+    - name: "validate-other-client-unaffected"
+      description: "Confirms inventory-report-cli still uses the realm's default direct grant flow"
+      type: "file"
+      source: "validation/validate-other-client-unaffected.sh"
+    - name: "validate-users-unchanged"
+      description: "Confirms the users' department attributes were not changed to fit the bug"
+      type: "file"
+      source: "validation/validate-users-unchanged.sh"
+
+teardown:
+  keepCluster: false

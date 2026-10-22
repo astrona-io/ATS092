@@ -1,0 +1,55 @@
+# Brand The Login Page With A Mounted Theme
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-092-lab-040-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1, the provider and Maven volumes and the tester pod, and creates the realm inventory"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-092-lab-040-01-setup"
+      description: "Nothing beyond the realm: the realm inventory still uses the default login theme"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-keycloak-ready"
+      description: "Confirms the Keycloak Deployment has a ready pod"
+      type: "file"
+      source: "validation/validate-keycloak-ready.sh"
+    - name: "validate-theme-mounted"
+      description: "Confirms the theme comes from a volume mounted under /opt/keycloak/themes"
+      type: "file"
+      source: "validation/validate-theme-mounted.sh"
+    - name: "validate-theme-selected"
+      description: "Confirms the realm inventory uses the login theme inventory"
+      type: "file"
+      source: "validation/validate-theme-selected.sh"
+    - name: "validate-login-page-text"
+      description: "Fetches the login page from the tester pod and confirms the theme's heading"
+      type: "file"
+      source: "validation/validate-login-page-text.sh"
+
+teardown:
+  keepCluster: false

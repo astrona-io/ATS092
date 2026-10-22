@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# PASS when a password-grant sign-in by alice produces the line AUDIT-LOG type=LOGIN realm=inventory client=inventory-cli user=alice.
+set -uo pipefail
+
+NAMESPACE="themescapstone-demo"
+
+kcadm() {
+  kubectl -n "$NAMESPACE" exec -i deploy/keycloak -- bash -c '
+    /opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 \
+      --realm master --user admin --password admin --config /tmp/kcadm.config >/dev/null &&
+    /opt/keycloak/bin/kcadm.sh "$@" --config /tmp/kcadm.config' kcadm "$@"
+}
+
+# get_user_token USER PASSWORD: prints the access token, or nothing.
+# The password grant is used only so a script can sign a user in.
+get_user_token() {
+  kubectl -n "$NAMESPACE" exec deploy/tester -- sh -c '
+    curl -s http://keycloak:8080/realms/inventory/protocol/openid-connect/token \
+      -d grant_type=password -d client_id=inventory-cli \
+      --data-urlencode username="$1" --data-urlencode password="$2" \
+    | jq -r ".access_token // empty"' sh "$1" "$2" 2>/dev/null
+}
+
+TOKEN="$(get_user_token alice alice-password)"
+if [ -z "$TOKEN" ]; then
+  echo "FAIL: alice cannot sign in through inventory-cli, so no LOGIN event happens."
+  exit 1
+fi
+sleep 3
+EXPECTED="AUDIT-LOG type=LOGIN realm=inventory client=inventory-cli user=alice"
+if ! kubectl -n "$NAMESPACE" logs deploy/keycloak --since=2m 2>/dev/null | grep -qF "$EXPECTED"; then
+  echo "FAIL: after a sign-in by alice, the Keycloak log has no line with: $EXPECTED"
+  exit 1
+fi
+echo "PASS: the sign-in produced: $EXPECTED"
+exit 0

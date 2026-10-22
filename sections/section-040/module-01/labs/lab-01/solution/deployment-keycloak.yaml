@@ -1,0 +1,86 @@
+# The keycloak Deployment with the theme inventory mounted from a ConfigMap.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: themes-demo
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  # Recreate: the old pod stops before the new one starts, so a restart
+  # always loads the JAR that is in the volume now.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.8.1
+          args: ["start-dev"]
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin
+                  key: username
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin
+                  key: password
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: management
+              containerPort: 9000
+          startupProbe:
+            httpGet:
+              path: /health/started
+              port: management
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: management
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: management
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: 768Mi
+              cpu: 250m
+            limits:
+              memory: 1536Mi
+          volumeMounts:
+            - name: providers
+              mountPath: /opt/keycloak/providers
+              readOnly: true
+            - name: inventory-theme
+              mountPath: /opt/keycloak/themes/inventory
+              readOnly: true
+      volumes:
+        - name: providers
+          persistentVolumeClaim:
+            claimName: keycloak-providers
+            readOnly: true
+        - name: inventory-theme
+          configMap:
+            name: inventory-theme
+            items:
+              - key: theme.properties
+                path: login/theme.properties
+              - key: messages_en.properties
+                path: login/messages/messages_en.properties

@@ -1,0 +1,333 @@
+# Course manifest for ATS092 - Keycloak Development & SPI Customization.
+#
+# One entry per section under `modules:`. Each section lists, in order: its
+# README, then for each module the landing page (course.md), its parts
+# (course-0N-*.md), and right after the part a lab tests, the lab's
+# question.md reading and the `type: lab` entry. The module's summary page
+# comes last. The section capstone closes the section. Playgrounds are not
+# listed: the landing page's playground marker shows them. solution.md is
+# never listed.
+#
+# Every `path:` is relative to this file.
+
+training:
+  id: ATS092
+  title: "Keycloak: Development & SPI Customization"
+  maturity: draft
+  description: >
+    Training material covering the Keycloak Development & SPI Customization
+    domain of the Keycloak training path: Service Provider Interfaces,
+    providers and their factories, registering and loading a provider JAR,
+    custom authenticators in authentication flows, event listeners for user
+    and admin events, and login themes with FreeMarker, as a mounted
+    directory and packed in a JAR. Every build runs in the cluster, so no
+    local Java is needed. Each module pairs a layered reader with an ungraded
+    hands-on playground and a graded practice lab. Each section closes with
+    an integration capstone.
+    Written for Keycloak 26.8.1.
+
+  certification:
+    name: Keycloak
+    code: KEYCLOAK
+    provider: Astrona
+    domain: Keycloak Development & SPI Customization
+    weight: 15
+
+modules:
+
+  - id: module-intro
+    title: "Introduction"
+    description: >
+      Start here. What this course trains you to do, how it is laid out, how
+      to get your machine ready with the astrona command-line tool, how the
+      content is written and checked, who maintains it, and how to report a
+      mistake.
+
+    content:
+      - type: reading
+        title: Introduction
+        path: sections/intro/README.md
+      - type: reading
+        title: "Welcome To The Course"
+        path: sections/intro/course-01-welcome.md
+      - type: reading
+        title: "Get Your Machine Ready"
+        path: sections/intro/course-02-get-your-machine-ready.md
+      - type: reading
+        title: "How This Course Is Made"
+        path: sections/intro/course-03-how-this-course-is-made.md
+
+  - id: module-010
+    title: "Service Provider Interfaces"
+    description: >
+      What a Service Provider Interface is, how a provider and its factory
+      work together, how META-INF/services registers a factory, and how
+      Keycloak loads a provider JAR from the providers directory, in
+      development mode and with kc.sh build.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Build And Load Your First Keycloak Provider"
+        path: sections/section-010/module-01/course.md
+      - type: reading
+        title: "What A Service Provider Interface Is"
+        path: sections/section-010/module-01/course-01-what-an-spi-is.md
+      - type: reading
+        title: "Writing A Provider And Its Factory"
+        path: sections/section-010/module-01/course-02-writing-a-provider-and-its-factory.md
+      - type: reading
+        title: "Loading Providers Into Keycloak"
+        path: sections/section-010/module-01/course-03-loading-providers.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Make Keycloak Load A Provider Lab"
+        path: sections/section-010/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: spi-basics
+        task_kind: troubleshooting
+        tags: [meta-inf-services, provider-factory, serverinfo, realm-resource-provider, maven-build, configmap]
+        learning_goals:
+          - Find why Keycloak does not load a provider that is in the providers directory
+          - Fix the services file, rebuild the JAR and restart Keycloak
+          - Prove the provider is loaded with serverinfo and a request to its endpoint
+        resources:
+          - name: "Server Developer Guide: Service Provider Interfaces"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_providers
+          - name: "Server Developer Guide: custom REST endpoints"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_extensions_rest
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-010/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Get A Broken Provider Build Running Capstone"
+        path: sections/section-010/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 35m
+        topic: packaging
+        task_kind: troubleshooting
+        tags: [maven-build, kubernetes-job, meta-inf-services, providers-directory, serverinfo, realm-resource-provider]
+        learning_goals:
+          - Read a failed Maven build and a Keycloak start failure from the Job and pod logs
+          - Fix the source so the JAR builds and Keycloak starts with it
+          - Prove the provider is loaded with serverinfo and a request to its endpoint
+        resources:
+          - name: "Server Developer Guide: Service Provider Interfaces"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_providers
+          - name: "Configuring providers"
+            url: https://www.keycloak.org/server/configuration-provider
+
+  - id: module-020
+    title: "Custom Authenticators"
+    description: >
+      Authentication flows, executions and requirements, then a custom
+      authenticator and its factory with a configuration property, wired into
+      a copy of the direct grant flow and bound to one client.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Add A Custom Step To An Authentication Flow"
+        path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "Authentication Flows, Executions And Requirements"
+        path: sections/section-020/module-01/course-01-flows-executions-and-requirements.md
+      - type: reading
+        title: "Writing An Authenticator And Its Factory"
+        path: sections/section-020/module-01/course-02-writing-an-authenticator.md
+      - type: reading
+        title: "Wiring An Authenticator Into A Flow"
+        path: sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Require A Department For Password Sign-In Lab"
+        path: sections/section-020/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: authenticators
+        task_kind: build
+        tags: [authenticator, authentication-flow, direct-grant-flow, execution-requirement, flow-binding, password-grant]
+        learning_goals:
+          - Copy the direct grant flow and add a custom authenticator as a required step
+          - Bind the new flow to one client without changing the realm's default flows
+          - Prove that a user with a department gets a token and a user without one is refused
+        resources:
+          - name: "Server Administration Guide: authentication flows"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows
+          - name: "Server Developer Guide: Authentication SPI"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-020/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Fix An Authenticator That Blocks The Wrong Users Capstone"
+        path: sections/section-020/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: authenticators
+        task_kind: troubleshooting
+        tags: [authenticator, flow-binding, execution-requirement, user-attributes, maven-build, password-grant]
+        learning_goals:
+          - Find why a custom authenticator refuses the right user and why its rule runs for every client
+          - Fix the authenticator's check and bind its flow to one client without changing the users
+          - Prove the result with one token issued, one refused, and a second client left unaffected
+        resources:
+          - name: "Server Developer Guide: Authentication SPI"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi
+          - name: "Server Administration Guide: authentication flows"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows
+
+  - id: module-030
+    title: "Event Listeners"
+    description: >
+      User events and admin events, the built-in jboss-logging listener, a
+      custom event listener provider, and how a realm turns listeners and
+      admin events on.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Send Keycloak Events To Your Own Listener"
+        path: sections/section-030/module-01/course.md
+      - type: reading
+        title: "User Events And Admin Events"
+        path: sections/section-030/module-01/course-01-user-events-and-admin-events.md
+      - type: reading
+        title: "Writing An Event Listener"
+        path: sections/section-030/module-01/course-02-writing-an-event-listener.md
+      - type: reading
+        title: "Enabling A Listener In A Realm"
+        path: sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Log Every Login With A Custom Listener Lab"
+        path: sections/section-030/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: event-listeners
+        task_kind: troubleshooting
+        tags: [event-listener, user-events, events-config, jboss-logging, maven-build, configmap]
+        learning_goals:
+          - Find why a custom listener writes nothing when a user signs in
+          - Fix the listener, rebuild it and enable it in the realm next to jboss-logging
+          - Prove it with an AUDIT-LOG line for a real login
+        resources:
+          - name: "Server Administration Guide: auditing and events"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#configuring-auditing-to-track-events
+          - name: "Server Developer Guide: Event Listener SPI"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_events
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-030/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Audit Admin Changes With A Custom Listener Capstone"
+        path: sections/section-030/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 35m
+        topic: event-listeners
+        task_kind: troubleshooting
+        tags: [event-listener, admin-events, user-events, events-config, jboss-logging, maven-build]
+        learning_goals:
+          - Implement the admin event method of a listener that only handles user events
+          - Turn on admin events and restore the realm's listener list
+          - Prove that a user created through the Admin REST API produces an AUDIT-LOG line
+        resources:
+          - name: "Server Administration Guide: admin events"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#auditing-admin-events
+          - name: "Server Developer Guide: Event Listener SPI"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_events
+
+  - id: module-040
+    title: "Themes With FreeMarker"
+    description: >
+      Theme types and inheritance, how Keycloak finds a theme, FreeMarker
+      templates and message files, a login theme in a mounted directory, and
+      the same theme packed in a JAR next to a provider.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-040/README.md
+
+      - type: reading
+        title: "Change The Login Page With A Theme"
+        path: sections/section-040/module-01/course.md
+      - type: reading
+        title: "Theme Types And How Keycloak Finds A Theme"
+        path: sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+      - type: reading
+        title: "A Theme In A Mounted Directory"
+        path: sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Brand The Login Page With A Mounted Theme Lab"
+        path: sections/section-040/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: themes
+        task_kind: build
+        tags: [login-theme, theme-directory, theme-properties, messages, configmap, freemarker]
+        learning_goals:
+          - Create a login theme that inherits from keycloak and overrides one message
+          - Mount the theme into the Keycloak pod from a ConfigMap and select it for the realm
+          - Prove it with the login page served to the tester pod
+        resources:
+          - name: "UI customization: themes"
+            url: https://www.keycloak.org/ui-customization/themes
+      - type: reading
+        title: "Packaging A Theme In A JAR"
+        path: sections/section-040/module-01/course-03-packaging-a-theme-in-a-jar.md
+      - type: reading
+        title: Summary
+        path: sections/section-040/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-040/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Ship A Theme And A Listener In One JAR Capstone"
+        path: sections/section-040/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: packaging
+        task_kind: troubleshooting
+        tags: [theme-jar, login-theme, event-listener, meta-inf-services, maven-build, events-config]
+        learning_goals:
+          - Find why a JAR's theme and its event listener are both missing from Keycloak
+          - Fix the theme descriptor and the services file, rebuild and enable both
+          - Prove it with the login page text and an AUDIT-LOG line from one JAR
+        resources:
+          - name: "UI customization: themes"
+            url: https://www.keycloak.org/ui-customization/themes
+          - name: "Server Developer Guide: Service Provider Interfaces"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_providers

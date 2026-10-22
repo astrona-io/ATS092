@@ -1,0 +1,51 @@
+# Make Keycloak Load A Provider
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-092-lab-010-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1, the provider and Maven volumes and the tester pod, and creates the realm inventory"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-092-lab-010-01-setup"
+      description: "Uploads the inventory-status source with a misnamed services file, builds it and restarts Keycloak"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-keycloak-ready"
+      description: "Confirms the Keycloak Deployment has a ready pod"
+      type: "file"
+      source: "validation/validate-keycloak-ready.sh"
+    - name: "validate-provider-in-serverinfo"
+      description: "Confirms serverinfo lists the provider inventory-status"
+      type: "file"
+      source: "validation/validate-provider-in-serverinfo.sh"
+    - name: "validate-endpoint-answers"
+      description: "Confirms GET /realms/inventory/inventory-status answers from the tester pod"
+      type: "file"
+      source: "validation/validate-endpoint-answers.sh"
+
+teardown:
+  keepCluster: false

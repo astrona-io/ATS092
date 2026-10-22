@@ -1,0 +1,55 @@
+# Audit Admin Changes With A Custom Listener
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-092-capstone-030"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1, the provider and Maven volumes and the tester pod, and creates the realm inventory"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-092-capstone-030-setup"
+      description: "Builds a listener that ignores admin events, and sets the realm's listeners to audit-log only with admin events off"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-listeners-enabled"
+      description: "Confirms the realm inventory sends events to jboss-logging and audit-log"
+      type: "file"
+      source: "validation/validate-listeners-enabled.sh"
+    - name: "validate-admin-events-on"
+      description: "Confirms admin events and their details are saved for the realm"
+      type: "file"
+      source: "validation/validate-admin-events-on.sh"
+    - name: "validate-admin-event-logged"
+      description: "Creates a user through the Admin REST API and confirms the AUDIT-LOG admin line"
+      type: "file"
+      source: "validation/validate-admin-event-logged.sh"
+    - name: "validate-login-logged"
+      description: "Signs alice in and confirms the audit-log listener writes the LOGIN line"
+      type: "file"
+      source: "validation/validate-login-logged.sh"
+
+teardown:
+  keepCluster: false

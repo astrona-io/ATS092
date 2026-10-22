@@ -1,0 +1,8 @@
+{
+  "themes": [
+    {
+      "name": "inventory-theme",
+      "types": ["login"]
+    }
+  ]
+}

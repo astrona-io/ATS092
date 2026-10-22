@@ -1,0 +1,62 @@
+# Builds the provider JAR from the ConfigMap provider-source and puts it in
+# the PVC keycloak-providers. A Job runs once: delete it before you apply it
+# again.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: build-provider
+  namespace: spi-demo
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: build-provider
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: maven
+          image: maven:3.9.15-eclipse-temurin-21
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              # A ConfigMap key is a file path with "/" written as "__".
+              for source_file in /source/*; do
+                relative_path="$(basename "$source_file" | sed 's|__|/|g')"
+                mkdir -p "$(dirname "/workspace/$relative_path")"
+                cp "$source_file" "/workspace/$relative_path"
+              done
+              cd /workspace
+              mvn -B -q package
+              rm -f /providers/*.jar
+              cp target/*.jar /providers/
+              echo "Provider JARs now in the volume: $(ls /providers)"
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1536Mi
+          volumeMounts:
+            - name: source
+              mountPath: /source
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+            - name: maven-cache
+              mountPath: /root/.m2
+            - name: providers
+              mountPath: /providers
+      volumes:
+        - name: source
+          configMap:
+            name: provider-source
+        - name: workspace
+          emptyDir: {}
+        - name: maven-cache
+          persistentVolumeClaim:
+            claimName: maven-cache
+        - name: providers
+          persistentVolumeClaim:
+            claimName: keycloak-providers

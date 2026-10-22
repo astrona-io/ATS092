@@ -1,0 +1,46 @@
+# Downloads the Keycloak artifacts and Maven plugins into the PVC maven-cache
+# once, so the reader's first build does not wait for them.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: warm-maven-cache
+  namespace: events-demo
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: maven
+          image: maven:3.9.15-eclipse-temurin-21
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              mkdir -p /workspace/src/main/java
+              cp /warmup/pom.xml /workspace/pom.xml
+              cd /workspace
+              mvn -B -q dependency:go-offline || echo "go-offline incomplete; the package step below still fills most of the cache"
+              mvn -B -q package
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 1536Mi
+          volumeMounts:
+            - name: warmup
+              mountPath: /warmup
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+            - name: maven-cache
+              mountPath: /root/.m2
+      volumes:
+        - name: warmup
+          configMap:
+            name: maven-warmup
+        - name: workspace
+          emptyDir: {}
+        - name: maven-cache
+          persistentVolumeClaim:
+            claimName: maven-cache
