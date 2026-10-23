@@ -22,14 +22,18 @@ kcadm create authentication/flows/direct-grant-with-department/executions/execut
   -s provider=require-department-attribute
 ```
 
-A new execution starts as `DISABLED`, which means it never runs. Find its id and set its requirement to `REQUIRED`:
+A new execution starts as `DISABLED`, which means it never runs, at the end of the flow's top level. Find its id and its priority, and set its requirement to `REQUIRED`:
 
 ```sh
 EXECUTION_ID="$(kcadm get authentication/flows/direct-grant-with-department/executions -r inventory \
   --fields id,providerId --format csv --noquotes | awk -F, '$2=="require-department-attribute"{print $1}')"
+EXECUTION_PRIORITY="$(kcadm get authentication/flows/direct-grant-with-department/executions -r inventory \
+  --fields id,priority --format csv --noquotes | awk -F, -v id="$EXECUTION_ID" '$1==id{print $2}')"
 kcadm update authentication/flows/direct-grant-with-department/executions -r inventory --no-merge \
-  -b "{\"id\":\"$EXECUTION_ID\",\"requirement\":\"REQUIRED\"}"
+  -b "{\"id\":\"$EXECUTION_ID\",\"requirement\":\"REQUIRED\",\"priority\":$EXECUTION_PRIORITY}"
 ```
+
+`--no-merge` replaces the whole execution with the body you send. Keycloak orders the steps of a flow by their `priority`, so the body carries the step's current priority too. Without it, the priority drops to `0`, the step moves before the username and password steps, and every sign-in fails with `unknown_error`: the authenticator runs before Keycloak knows the user.
 
 Read the flow again with `kcadm get authentication/flows/direct-grant-with-department/executions -r inventory --fields displayName,requirement`. The last step shows the display name of your authenticator, `Require Department Attribute`, with the requirement `REQUIRED`.
 

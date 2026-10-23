@@ -129,8 +129,12 @@ wire_flow() {
     execution_id="$(kcadm get authentication/flows/direct-grant-with-department/executions -r inventory \
       --fields id,providerId --format csv --noquotes | awk -F, '$2=="require-department-attribute"{print $1}')"
   fi
+  # --no-merge replaces the whole execution: send its current priority too, or
+  # it drops to 0 and the step moves before the username and password steps.
+  execution_priority="$(kcadm get authentication/flows/direct-grant-with-department/executions -r inventory \
+    --fields id,priority --format csv --noquotes | awk -F, -v id="$execution_id" '$1==id{print $2}')"
   kcadm update authentication/flows/direct-grant-with-department/executions -r inventory --no-merge \
-    -b "{\"id\":\"$execution_id\",\"requirement\":\"$requirement\"}"
+    -b "{\"id\":\"$execution_id\",\"requirement\":\"$requirement\",\"priority\":${execution_priority:-0}}"
   flow_id="$(kcadm get authentication/flows -r inventory --fields id,alias --format csv --noquotes \
     | awk -F, '$2=="direct-grant-with-department"{print $1}')"
   if [ "$binding" = "realm" ]; then
