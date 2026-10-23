@@ -351,6 +351,12 @@ real application uses the authorization code flow.
   services file that names a class that does not exist makes the build at
   start fail, and the pod restarts. Pages must say which symptom belongs to
   which mistake.
+- **`kcadm get --fields` and maps (seen on a live run, 2026-10-23).** A
+  map field such as `authenticationFlowBindingOverrides` or `attributes`
+  prints `{}` unless the filter names its keys:
+  `--fields 'authenticationFlowBindingOverrides(direct_grant)'`,
+  `--fields 'attributes(department)'`. A key with dots cannot be named;
+  read the whole object and use `jq`. Arrays (`eventsListeners`) print fine.
 - **Keycloak 26.8.1 facts (from the documentation and the compiled API, not
   yet seen on a run):**
   - `RealmResourceProvider`, `RealmResourceProviderFactory`, `Authenticator`,
