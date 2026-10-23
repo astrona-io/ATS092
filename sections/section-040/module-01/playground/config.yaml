@@ -7,7 +7,6 @@ metadata:
   name: "ats-092-playground-040-01"
   docs:
     guide: "docs/overview.md"
-
 bootstrap:
   init:
     - name: "prepare"
@@ -19,6 +18,11 @@ bootstrap:
       description: "Starting workloads (namespace themes-demo, keycloak-admin Secret, keycloak-providers and maven-cache PVCs, keycloak Deployment and Service, tester client)."
       type: "file"
       source: "manifests/lab-start.yaml"
-
 teardown:
   keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - maven:3.9.15-eclipse-temurin-21
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1
