@@ -36,12 +36,12 @@ get_user_token() {
     | jq -r ".access_token // empty"' sh "$1" "$2" 2>/dev/null
 }
 
-ALICE="$(kcadm get users -r inventory -q username=alice -q exact=true --fields attributes 2>/dev/null)"
+ALICE="$(kcadm get users -r inventory -q username=alice -q exact=true --fields 'attributes(department)' 2>/dev/null)"
 if ! printf '%s' "$ALICE" | tr -d ' \n' | grep -q '"department":\["warehouse"\]'; then
   echo "FAIL: alice no longer has department=warehouse. Fix the code, not the users."
   exit 1
 fi
-BOB="$(kcadm get users -r inventory -q username=bob -q exact=true --fields attributes 2>/dev/null)"
+BOB="$(kcadm get users -r inventory -q username=bob -q exact=true --fields 'attributes(department)' 2>/dev/null)"
 if printf '%s' "$BOB" | grep -q '"department"'; then
   echo "FAIL: bob has a department now. Fix the code, not the users."
   exit 1

@@ -24,7 +24,7 @@ Through `inventory-cli`, `alice` gets the authenticator's error message and `bob
 ```sh
 kcadm get realms/inventory --fields directGrantFlow
 CLIENT_ID="$(kcadm get clients -r inventory -q clientId=inventory-cli --fields id --format csv --noquotes)"
-kcadm get "clients/$CLIENT_ID" -r inventory --fields authenticationFlowBindingOverrides
+kcadm get "clients/$CLIENT_ID" -r inventory --fields 'authenticationFlowBindingOverrides(direct_grant)'
 ```
 
 The realm binds `direct-grant-with-department` as its direct grant flow, and `inventory-cli` has no override. So every client in the realm runs the department check, including `inventory-report-cli`. The rule was meant for `inventory-cli` only.

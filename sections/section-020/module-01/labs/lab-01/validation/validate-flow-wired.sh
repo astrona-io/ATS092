@@ -45,8 +45,8 @@ fi
 FLOW_ID="$(kcadm get authentication/flows -r inventory --fields id,alias --format csv --noquotes 2>/dev/null \
   | awk -F, '$2=="direct-grant-with-department"{print $1}')"
 CLIENT_ID="$(kcadm get clients -r inventory -q clientId=inventory-cli --fields id --format csv --noquotes 2>/dev/null)"
-if [ -z "$FLOW_ID" ] || ! kcadm get "clients/$CLIENT_ID" -r inventory --fields authenticationFlowBindingOverrides 2>/dev/null \
-     | grep -q "\"direct_grant\" *: *\"$FLOW_ID\""; then
+if [ -z "$FLOW_ID" ] || ! kcadm get "clients/$CLIENT_ID" -r inventory --fields 'authenticationFlowBindingOverrides(direct_grant)' 2>/dev/null \
+     | grep "\"direct_grant\" *: *\"$FLOW_ID\"" >/dev/null; then
   echo "FAIL: inventory-cli does not use direct-grant-with-department as its direct grant flow override."
   exit 1
 fi
