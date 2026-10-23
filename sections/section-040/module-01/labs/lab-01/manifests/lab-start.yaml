@@ -16,6 +16,19 @@ stringData:
   username: admin
   password: admin
 ---
+# Keycloak's development database (H2), kept on a volume so the realms
+# survive the restart that loads a rebuilt provider.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-data
+  namespace: themes-demo
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
 # The build Job writes the provider JAR here; Keycloak reads it at start.
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -109,11 +122,16 @@ spec:
             - name: providers
               mountPath: /opt/keycloak/providers
               readOnly: true
+            - name: data
+              mountPath: /opt/keycloak/data/h2
       volumes:
         - name: providers
           persistentVolumeClaim:
             claimName: keycloak-providers
             readOnly: true
+        - name: data
+          persistentVolumeClaim:
+            claimName: keycloak-data
 ---
 apiVersion: v1
 kind: Service

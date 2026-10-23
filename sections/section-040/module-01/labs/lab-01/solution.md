@@ -119,6 +119,8 @@ spec:
             - name: providers
               mountPath: /opt/keycloak/providers
               readOnly: true
+            - name: data
+              mountPath: /opt/keycloak/data/h2
             - name: inventory-theme
               mountPath: /opt/keycloak/themes/inventory
               readOnly: true
@@ -127,6 +129,9 @@ spec:
           persistentVolumeClaim:
             claimName: keycloak-providers
             readOnly: true
+        - name: data
+          persistentVolumeClaim:
+            claimName: keycloak-data
         - name: inventory-theme
           configMap:
             name: inventory-theme
