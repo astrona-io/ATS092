@@ -30,8 +30,6 @@ training:
     name: Keycloak
     code: KEYCLOAK
     provider: Astrona
-    domain: Keycloak Development & SPI Customization
-    weight: 15
 
 modules:
 
