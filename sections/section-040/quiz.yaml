@@ -1,0 +1,245 @@
+# Knowledge check for section 040. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats092-040
+course_id: ATS092
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-040
+  title: "Themes With FreeMarker"
+placement:
+  position: after
+  reading: sections/section-040/capstone/labs/lab-01/question.md
+questions:
+  - id: ats092-040-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know the theme types"
+    source_readings:
+      - sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+    prompt: "Which theme type renders the sign-in form and the password reset page?"
+    options:
+      - id: a
+        text: "`login`"
+        explanation: "Correct. The login type renders the pages of a sign-in."
+      - id: b
+        text: "`account`"
+        explanation: "Not correct. This type renders the account console."
+      - id: c
+        text: "`admin`"
+        explanation: "Not correct. This type renders the Admin Console."
+      - id: d
+        text: "`welcome`"
+        explanation: "Not correct. This type renders the page at the server's root."
+    correct_option: a
+    explanation: "Correct. The login type renders the pages of a sign-in."
+
+  - id: ats092-040-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the smallest change"
+    source_readings:
+      - sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+    prompt: "You want to change only the login page heading. What is the smallest change?"
+    options:
+      - id: a
+        text: "Copy `login.ftl` and edit it."
+        explanation: "Not correct. A copied template must be checked on every upgrade."
+      - id: b
+        text: "Edit the built-in `keycloak` theme in the server."
+        explanation: "Not correct. Files inside the server are replaced on upgrade."
+      - id: c
+        text: "Change the realm's `emailTheme`."
+        explanation: "Not correct. This changes emails, not the login page."
+      - id: d
+        text: "Override the message key `loginAccountTitle` in your own theme's message file."
+        explanation: "Correct. The template stays the same, so upgrades are safer."
+    correct_option: d
+    explanation: "Correct. The template stays the same, so upgrades are safer."
+
+  - id: ats092-040-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Follow the parent lookup"
+    source_readings:
+      - sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+    prompt: "Keycloak needs a file that your theme does not have. What does it do?"
+    options:
+      - id: a
+        text: "It shows an error page."
+        explanation: "Not correct. Missing files fall back to the parent."
+      - id: b
+        text: "It looks in the realm `master`."
+        explanation: "Not correct. Themes are not looked up in realms."
+      - id: c
+        text: "It looks in the theme named by `parent`, then in that theme's parent."
+        explanation: "Correct. Messages are merged the same way."
+      - id: d
+        text: "It creates an empty file."
+        explanation: "Not correct. Keycloak does not create theme files."
+    correct_option: c
+    explanation: "Correct. Messages are merged the same way."
+
+  - id: ats092-040-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain templates and messages"
+    source_readings:
+      - sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+    prompt: "In `${msg(\"loginAccountTitle\")}`, what decides the text that is shown?"
+    options:
+      - id: a
+        text: "The FreeMarker template alone."
+        explanation: "Not correct. The template only holds the key."
+      - id: b
+        text: "The message file for the user's language, such as `messages_en.properties`."
+        explanation: "Correct. The template decides where, the message file decides what."
+      - id: c
+        text: "The realm's name."
+        explanation: "Not correct. The realm's name does not change the message."
+      - id: d
+        text: "The Keycloak pod's name."
+        explanation: "Not correct. Pod names play no part."
+    correct_option: b
+    explanation: "Correct. The template decides where, the message file decides what."
+
+  - id: ats092-040-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Place a theme directory"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+    prompt: "Where must a theme named `inventory` with type `login` be in the Keycloak pod?"
+    options:
+      - id: a
+        text: "`/opt/keycloak/themes/inventory/login/`"
+        explanation: "Correct. The path is themes, theme name, type."
+      - id: b
+        text: "`/opt/keycloak/providers/inventory/`"
+        explanation: "Not correct. The providers directory holds JARs."
+      - id: c
+        text: "`/opt/keycloak/conf/inventory-theme/`"
+        explanation: "Not correct. Keycloak does not look for themes there."
+      - id: d
+        text: "`/tmp/themes/inventory/login/`"
+        explanation: "Not correct. Keycloak does not read `/tmp`."
+    correct_option: a
+    explanation: "Correct. The path is themes, theme name, type."
+
+  - id: ats092-040-q06
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Mount a ConfigMap as a theme"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+    prompt: "Why does the theme volume use `items` with a `path` for each key?"
+    options:
+      - id: a
+        text: "`items` encrypts the files."
+        explanation: "Not correct. It only maps keys to paths."
+      - id: b
+        text: "`items` makes Keycloak cache the theme."
+        explanation: "Not correct. Caching is a server setting."
+      - id: c
+        text: "`items` selects the theme for the realm."
+        explanation: "Not correct. The realm's `loginTheme` selects it."
+      - id: d
+        text: "A ConfigMap volume is flat by default, and the theme needs folders such as `messages/`."
+        explanation: "Correct. `items` maps each key to a path below the mount point."
+    correct_option: d
+    explanation: "Correct. `items` maps each key to a path below the mount point."
+
+  - id: ats092-040-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Avoid hiding other themes"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+    prompt: "What happens if you mount the theme ConfigMap at `/opt/keycloak/themes`?"
+    options:
+      - id: a
+        text: "Nothing, because Keycloak merges the folders."
+        explanation: "Not correct. A mount hides what was in the folder."
+      - id: b
+        text: "Keycloak deletes the built-in themes."
+        explanation: "Not correct. They are inside the server and stay."
+      - id: c
+        text: "It hides every other theme directory in that folder; mount at `/opt/keycloak/themes/<theme name>`."
+        explanation: "Correct. The mount replaces the folder's content."
+      - id: d
+        text: "The theme is selected automatically."
+        explanation: "Not correct. A realm must still select it."
+    correct_option: c
+    explanation: "Correct. The mount replaces the folder's content."
+
+  - id: ats092-040-q08
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Select the theme"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+    prompt: "Keycloak lists the theme `inventory`, but the login page still shows the default heading. What is missing?"
+    options:
+      - id: a
+        text: "A restart after every message change."
+        explanation: "Not correct. Development mode shows changes without a restart."
+      - id: b
+        text: "The realm's `loginTheme` is not set to `inventory`."
+        explanation: "Correct. A found theme changes nothing until a realm selects it."
+      - id: c
+        text: "A second parent theme."
+        explanation: "Not correct. One parent is enough."
+      - id: d
+        text: "A new `pom.xml`."
+        explanation: "Not correct. A mounted theme directory needs no Maven build."
+    correct_option: b
+    explanation: "Correct. A found theme changes nothing until a realm selects it."
+
+  - id: ats092-040-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Match names in keycloak-themes.json"
+    source_readings:
+      - sections/section-040/module-01/course-03-packaging-a-theme-in-a-jar.md
+    prompt: "A theme JAR holds `theme/inventory/login/` but `keycloak-themes.json` lists the name `inventory-jar`. What is the effect?"
+    options:
+      - id: a
+        text: "Keycloak cannot find the theme's files, because the name must match the folder under `theme/`."
+        explanation: "Correct. Keycloak uses the name to find the folder."
+      - id: b
+        text: "Keycloak renames the folder."
+        explanation: "Not correct. Keycloak never renames files."
+      - id: c
+        text: "The theme works, because the JAR name is used."
+        explanation: "Not correct. The descriptor name is used."
+      - id: d
+        text: "Only the email theme is affected."
+        explanation: "Not correct. The theme is not found for any type."
+    correct_option: a
+    explanation: "Correct. Keycloak uses the name to find the folder."
+
+  - id: ats092-040-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Check both halves of one JAR"
+    source_readings:
+      - sections/section-040/module-01/course-03-packaging-a-theme-in-a-jar.md
+    prompt: "A JAR holds a theme and an event listener. The theme shows on the login page, but `audit-log` is missing from the provider list. Where do you look?"
+    options:
+      - id: a
+        text: "At `keycloak-themes.json`, because it registers providers."
+        explanation: "Not correct. It lists only themes."
+      - id: b
+        text: "At the realm's `loginTheme`, because it loads providers."
+        explanation: "Not correct. It selects a theme only."
+      - id: c
+        text: "At the Keycloak version in the `pom.xml` of the theme."
+        explanation: "Not correct. The theme half works, so the build is fine."
+      - id: d
+        text: "At the services file, because the two halves of the JAR can fail independently."
+        explanation: "Correct. A misnamed services file hides the provider while the theme works."
+    correct_option: d
+    explanation: "Correct. A misnamed services file hides the provider while the theme works."

@@ -1,0 +1,245 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats092-030
+course_id: ATS092
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "Event Listeners"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats092-030-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Separate saving from listening"
+    source_readings:
+      - sections/section-030/module-01/course-01-user-events-and-admin-events.md
+    prompt: "A realm has `eventsEnabled` set to `false`. What happens to its user events?"
+    options:
+      - id: a
+        text: "The realm saves no events in the database, but its listeners still receive every event."
+        explanation: "Correct. Saving and listening are separate."
+      - id: b
+        text: "No listener receives any event."
+        explanation: "Not correct. Listeners receive events whether or not the realm saves them."
+      - id: c
+        text: "Keycloak saves the events and sends none to listeners."
+        explanation: "Not correct. `false` turns off saving."
+      - id: d
+        text: "Only failed events are sent to listeners."
+        explanation: "Not correct. Listeners receive successful and failed events."
+    correct_option: a
+    explanation: "Correct. Saving and listening are separate."
+
+  - id: ats092-030-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why a login is missing from the log"
+    source_readings:
+      - sections/section-030/module-01/course-01-user-events-and-admin-events.md
+    prompt: "With only `jboss-logging` enabled, a successful sign-in leaves no line in the server log. Why?"
+    options:
+      - id: a
+        text: "The `LOGIN` event is not sent for the password grant."
+        explanation: "Not correct. `LOGIN` is sent for a token request such as the password grant."
+      - id: b
+        text: "Keycloak sends events only after a restart."
+        explanation: "Not correct. Events are sent as they happen."
+      - id: c
+        text: "The realm `master` must save the event first."
+        explanation: "Not correct. Saving is not needed for a listener."
+      - id: d
+        text: "`jboss-logging` writes successful events at `debug`, and the server prints only `info` and above."
+        explanation: "Correct. The `LOGIN` event happened but did not reach the log."
+    correct_option: d
+    explanation: "Correct. The `LOGIN` event happened but did not reach the log."
+
+  - id: ats092-030-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an admin event"
+    source_readings:
+      - sections/section-030/module-01/course-01-user-events-and-admin-events.md
+    prompt: "Which fields describe an admin event?"
+    options:
+      - id: a
+        text: "An event type such as `LOGIN` and a client id."
+        explanation: "Not correct. That describes a user event."
+      - id: b
+        text: "A theme name and a message key."
+        explanation: "Not correct. These belong to themes."
+      - id: c
+        text: "An operation type, a resource type and a resource path."
+        explanation: "Correct. For example `CREATE`, `USER` and `users/<id>`."
+      - id: d
+        text: "A flow alias and a requirement."
+        explanation: "Not correct. These belong to authentication flows."
+    correct_option: c
+    explanation: "Correct. For example `CREATE`, `USER` and `users/<id>`."
+
+  - id: ats092-030-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Test a LOGIN listener"
+    source_readings:
+      - sections/section-030/module-01/course-02-writing-an-event-listener.md
+    prompt: "You test a listener that handles only `LOGIN` by signing in with a wrong password. It writes nothing. Why?"
+    options:
+      - id: a
+        text: "The listener is not loaded."
+        explanation: "Not correct. A loaded listener still ignores other event types."
+      - id: b
+        text: "A wrong password sends `LOGIN_ERROR`, not `LOGIN`."
+        explanation: "Correct. Test a `LOGIN` listener with a successful sign-in."
+      - id: c
+        text: "Keycloak sends no event for a wrong password."
+        explanation: "Not correct. It sends `LOGIN_ERROR`."
+      - id: d
+        text: "Listeners receive only admin events."
+        explanation: "Not correct. Listeners receive user events too."
+    correct_option: b
+    explanation: "Correct. Test a `LOGIN` listener with a successful sign-in."
+
+  - id: ats092-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Look up names in a listener"
+    source_readings:
+      - sections/section-030/module-01/course-02-writing-an-event-listener.md
+    prompt: "A `LOGIN` event holds the realm id and the user id. How does the listener write the user's name?"
+    options:
+      - id: a
+        text: "It looks the user up with `session.users().getUserById(realm, id)`."
+        explanation: "Correct. The listener uses the `KeycloakSession` from its factory."
+      - id: b
+        text: "It reads the name from the services file."
+        explanation: "Not correct. The services file only names the factory class."
+      - id: c
+        text: "It asks the client to send the name again."
+        explanation: "Not correct. A listener cannot ask the client."
+      - id: d
+        text: "It uses the id in the log line because names are never available."
+        explanation: "Not correct. Names are available through the session."
+    correct_option: a
+    explanation: "Correct. The listener uses the `KeycloakSession` from its factory."
+
+  - id: ats092-030-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the role of the factory id"
+    source_readings:
+      - sections/section-030/module-01/course-02-writing-an-event-listener.md
+    prompt: "What is the id returned by an event listener factory's `getId()` used for?"
+    options:
+      - id: a
+        text: "It is the name of the Maven JAR."
+        explanation: "Not correct. The JAR name comes from the `pom.xml`."
+      - id: b
+        text: "It is the log level of the listener."
+        explanation: "Not correct. The listener chooses its level in code."
+      - id: c
+        text: "It is the name of the services file."
+        explanation: "Not correct. The file is named after the factory interface."
+      - id: d
+        text: "It is the name a realm puts in its `eventsListeners` list."
+        explanation: "Correct. Here it is `audit-log`."
+    correct_option: d
+    explanation: "Correct. Here it is `audit-log`."
+
+  - id: ats092-030-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain a loaded but silent listener"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "Keycloak lists `audit-log` in the server info, but a sign-in writes no `AUDIT-LOG` line. What is missing?"
+    options:
+      - id: a
+        text: "A restart of the pod after the build."
+        explanation: "Not correct. Keycloak already loaded the listener."
+      - id: b
+        text: "A second JAR with the same listener."
+        explanation: "Not correct. One loaded copy is enough."
+      - id: c
+        text: "The realm's `eventsListeners` list does not contain `audit-log`."
+        explanation: "Correct. Each realm chooses its own listeners."
+      - id: d
+        text: "A theme for the realm."
+        explanation: "Not correct. Themes do not affect events."
+    correct_option: c
+    explanation: "Correct. Each realm chooses its own listeners."
+
+  - id: ats092-030-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Keep the built-in listener"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "You set `eventsListeners` to only `audit-log`. What is the effect?"
+    options:
+      - id: a
+        text: "Keycloak adds `audit-log` and keeps `jboss-logging`."
+        explanation: "Not correct. Setting the list replaces it."
+      - id: b
+        text: "The list is replaced, so `jboss-logging` is gone and failed sign-ins are no longer logged as warnings."
+        explanation: "Correct. Write every listener the realm should keep."
+      - id: c
+        text: "Keycloak refuses the change."
+        explanation: "Not correct. It accepts a list with one entry."
+      - id: d
+        text: "Only admin events are sent to the realm."
+        explanation: "Not correct. User events are still sent to the listed listeners."
+    correct_option: b
+    explanation: "Correct. Write every listener the realm should keep."
+
+  - id: ats092-030-q09
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what needs a restart"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "What needs a restart of Keycloak?"
+    options:
+      - id: a
+        text: "A new listener JAR in the providers directory."
+        explanation: "Correct. Keycloak reads JARs only when it starts."
+      - id: b
+        text: "Changing a realm's `eventsListeners` list."
+        explanation: "Not correct. This is realm data and applies from the next event."
+      - id: c
+        text: "Turning on `adminEventsEnabled`."
+        explanation: "Not correct. This is realm data too."
+      - id: d
+        text: "Creating a user with `kcadm`."
+        explanation: "Not correct. This needs no restart."
+    correct_option: a
+    explanation: "Correct. Keycloak reads JARs only when it starts."
+
+  - id: ats092-030-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find the realm of an admin event"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "An administrator signed in to the realm `master` creates a user in the realm `inventory`. To which realm does the admin event belong?"
+    options:
+      - id: a
+        text: "`master`, the realm the administrator signed in to."
+        explanation: "Not correct. The event belongs to the changed realm."
+      - id: b
+        text: "Both realms get a copy of the event."
+        explanation: "Not correct. Only the changed realm gets it."
+      - id: c
+        text: "None, because admin events have no realm."
+        explanation: "Not correct. An admin event always has a realm."
+      - id: d
+        text: "`inventory`, the realm that was changed."
+        explanation: "Correct. The audit line shows `realm=inventory`."
+    correct_option: d
+    explanation: "Correct. The audit line shows `realm=inventory`."

@@ -1,0 +1,245 @@
+# Knowledge check for section 010. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats092-010
+course_id: ATS092
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-010
+  title: "Service Provider Interfaces"
+placement:
+  position: after
+  reading: sections/section-010/capstone/labs/lab-01/question.md
+questions:
+  - id: ats092-010-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Define an SPI and a provider"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "What is a provider in Keycloak?"
+    options:
+      - id: a
+        text: "One implementation of a Java interface that Keycloak defines for one kind of extension."
+        explanation: "Correct. The interface is the SPI, and each implementation of it is a provider."
+      - id: b
+        text: "A Maven project that contains a `pom.xml` and nothing else."
+        explanation: "Not correct. A Maven project is only how a provider is built."
+      - id: c
+        text: "A pod in the Keycloak namespace that serves one realm."
+        explanation: "Not correct. A provider is Java code loaded into Keycloak, not a pod."
+      - id: d
+        text: "A setting in a realm that turns a feature on."
+        explanation: "Not correct. A realm setting can select a provider but is not one."
+    correct_option: a
+    explanation: "Correct. The interface is the SPI, and each implementation of it is a provider."
+
+  - id: ats092-010-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "List the providers Keycloak loaded"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "Which command shows every SPI and provider that a running Keycloak loaded?"
+    options:
+      - id: a
+        text: "`kubectl get providers`"
+        explanation: "Not correct. Kubernetes has no resource called providers for Keycloak."
+      - id: b
+        text: "`kcadm get realms`"
+        explanation: "Not correct. This lists realms, not loaded providers."
+      - id: c
+        text: "`ls /opt/keycloak/bin`"
+        explanation: "Not correct. This lists the tools, not the loaded providers."
+      - id: d
+        text: "`kcadm get serverinfo`"
+        explanation: "Correct. The Admin REST API path `serverinfo` reports all SPIs and providers."
+    correct_option: d
+    explanation: "Correct. The Admin REST API path `serverinfo` reports all SPIs and providers."
+
+  - id: ats092-010-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell the life of a factory from the life of a provider"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "How often does Keycloak create the provider factory and the provider?"
+    options:
+      - id: a
+        text: "The factory for every request; the provider once at start."
+        explanation: "Not correct. This reverses the two lives."
+      - id: b
+        text: "Both once at start, and both are shared by every request."
+        explanation: "Not correct. The provider is created per request."
+      - id: c
+        text: "The factory once at start; the provider from the factory's `create()`, usually once per request."
+        explanation: "Correct. The factory lives as long as the server and creates a provider for each request."
+      - id: d
+        text: "Both for every request, and both closed when the request ends."
+        explanation: "Not correct. The factory stays until the server shuts down."
+    correct_option: c
+    explanation: "Correct. The factory lives as long as the server and creates a provider for each request."
+
+  - id: ats092-010-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Place the KeycloakSession correctly"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "A developer stores the `KeycloakSession` in a field of the factory. What is wrong with that?"
+    options:
+      - id: a
+        text: "Nothing. The session is created once at start and shared."
+        explanation: "Not correct. A new session is created for each request."
+      - id: b
+        text: "A session lives only as long as its request, so the factory must not keep it."
+        explanation: "Correct. The provider keeps the session for one request; the factory outlives it."
+      - id: c
+        text: "Sessions can only be read in the Admin Console."
+        explanation: "Not correct. Providers use the session in every request."
+      - id: d
+        text: "The factory cannot have fields in Java."
+        explanation: "Not correct. A factory may have fields; the problem is the session's lifetime."
+    correct_option: b
+    explanation: "Correct. The provider keeps the session for one request; the factory outlives it."
+
+  - id: ats092-010-q05
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain how Keycloak finds a factory"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "How does Keycloak find the factory classes in a provider JAR?"
+    options:
+      - id: a
+        text: "With Java's `ServiceLoader`, which reads files under `META-INF/services/` in the JAR."
+        explanation: "Correct. Keycloak does not scan the JAR for classes."
+      - id: b
+        text: "It scans every class in the JAR for the word Factory."
+        explanation: "Not correct. Keycloak does not scan classes."
+      - id: c
+        text: "It reads the class names from the `pom.xml`."
+        explanation: "Not correct. The `pom.xml` is only used at build time."
+      - id: d
+        text: "It reads the factory name from the realm settings."
+        explanation: "Not correct. Realm settings come after the factory is loaded."
+    correct_option: a
+    explanation: "Correct. Keycloak does not scan the JAR for classes."
+
+  - id: ats092-010-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the services file correctly"
+    source_readings:
+      - sections/section-010/module-01/course-02-writing-a-provider-and-its-factory.md
+    prompt: "What is the correct name of the services file for a realm resource provider?"
+    options:
+      - id: a
+        text: "`META-INF/services/org.keycloak.services.resource.RealmResourceProvider`"
+        explanation: "Not correct. This names the provider interface and is ignored without a message."
+      - id: b
+        text: "`META-INF/services/inventory-status`"
+        explanation: "Not correct. The file is named after an interface, not the provider id."
+      - id: c
+        text: "`META-INF/beans.xml`"
+        explanation: "Not correct. `beans.xml` is an empty file for the web layer, not the registration."
+      - id: d
+        text: "`META-INF/services/org.keycloak.services.resource.RealmResourceProviderFactory`"
+        explanation: "Correct. The file is named after the factory interface."
+    correct_option: d
+    explanation: "Correct. The file is named after the factory interface."
+
+  - id: ats092-010-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use the provided scope"
+    source_readings:
+      - sections/section-010/module-01/course-02-writing-a-provider-and-its-factory.md
+    prompt: "Why do the Keycloak dependencies in the `pom.xml` use the scope `provided`?"
+    options:
+      - id: a
+        text: "It makes Maven download the dependencies faster."
+        explanation: "Not correct. The scope does not change download speed."
+      - id: b
+        text: "It makes Keycloak update the dependencies by itself."
+        explanation: "Not correct. Keycloak never changes the JAR's dependencies."
+      - id: c
+        text: "Maven compiles against them but does not pack them into the JAR, because Keycloak has them at runtime."
+        explanation: "Correct. A second copy of Keycloak classes in the JAR would cause class conflicts."
+      - id: d
+        text: "It lets the JAR run on any Keycloak version."
+        explanation: "Not correct. The SPIs are internal, and the version must match the server."
+    correct_option: c
+    explanation: "Correct. A second copy of Keycloak classes in the JAR would cause class conflicts."
+
+  - id: ats092-010-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a provider that is missing with a clean log"
+    source_readings:
+      - sections/section-010/module-01/course-03-loading-providers.md
+    prompt: "The build Job succeeded, the JAR is in the providers directory, Keycloak was restarted and starts without an error, but the endpoint answers `404`. What is the most likely cause?"
+    options:
+      - id: a
+        text: "The services file names a class that does not exist."
+        explanation: "Not correct. That makes the build at start fail, and the pod restarts again and again."
+      - id: b
+        text: "The services file has the wrong name, so `ServiceLoader` never opened it."
+        explanation: "Correct. A misnamed file gives no error; the provider id is just missing from the server info."
+      - id: c
+        text: "The `tester` pod has no network access."
+        explanation: "Not correct. A blocked network gives a connection error, not a `404` from Keycloak."
+      - id: d
+        text: "Keycloak must be started with `--optimized` to load JARs."
+        explanation: "Not correct. `--optimized` skips the build and would not load a new JAR."
+    correct_option: b
+    explanation: "Correct. A misnamed file gives no error; the provider id is just missing from the server info."
+
+  - id: ats092-010-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read the log of a crashed Keycloak container"
+    source_readings:
+      - sections/section-010/module-01/course-03-loading-providers.md
+    prompt: "A services file names a class that does not exist. Keycloak restarts again and again. Which command shows the error of the container that crashed?"
+    options:
+      - id: a
+        text: "`kubectl -n spi-demo logs deploy/keycloak --previous`"
+        explanation: "Correct. `--previous` shows the log of the container that failed."
+      - id: b
+        text: "`kubectl -n spi-demo logs deploy/keycloak` after the new container started"
+        explanation: "Not correct. This shows the container that is starting now, not the one that crashed."
+      - id: c
+        text: "`kcadm get serverinfo`"
+        explanation: "Not correct. The server is not running, so it cannot answer."
+      - id: d
+        text: "`kubectl -n spi-demo get configmap provider-source`"
+        explanation: "Not correct. This shows the source, not the crash error."
+    correct_option: a
+    explanation: "Correct. `--previous` shows the log of the container that failed."
+
+  - id: ats092-010-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Load providers in production"
+    source_readings:
+      - sections/section-010/module-01/course-03-loading-providers.md
+    prompt: "A production server starts with `--optimized`. How does a changed provider JAR get loaded?"
+    options:
+      - id: a
+        text: "Restart the pod; the restart reads the providers directory."
+        explanation: "Not correct. An optimized server does not build at start."
+      - id: b
+        text: "Send a request to `/realms/master/reload`."
+        explanation: "Not correct. Keycloak has no such reload endpoint for providers."
+      - id: c
+        text: "Change the realm's `loginTheme` setting."
+        explanation: "Not correct. Realm settings do not load JARs."
+      - id: d
+        text: "Build a new image that runs `kc.sh build` with the JAR in the providers directory."
+        explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."
+    correct_option: d
+    explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."

@@ -124,6 +124,10 @@ modules:
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_providers
           - name: "Configuring providers"
             url: https://www.keycloak.org/server/configuration-provider
+      - type: quiz
+        title: "Knowledge Check: Service Provider Interfaces"
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
 
   - id: module-020
     title: "Custom Authenticators"
@@ -193,6 +197,10 @@ modules:
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi
           - name: "Server Administration Guide: authentication flows"
             url: https://www.keycloak.org/docs/latest/server_admin/index.html#_authentication-flows
+      - type: quiz
+        title: "Knowledge Check: Custom Authenticators"
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
 
   - id: module-030
     title: "Event Listeners"
@@ -262,6 +270,10 @@ modules:
             url: https://www.keycloak.org/docs/latest/server_admin/index.html#auditing-admin-events
           - name: "Server Developer Guide: Event Listener SPI"
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_events
+      - type: quiz
+        title: "Knowledge Check: Event Listeners"
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
 
   - id: module-040
     title: "Themes With FreeMarker"
@@ -329,3 +341,11 @@ modules:
             url: https://www.keycloak.org/ui-customization/themes
           - name: "Server Developer Guide: Service Provider Interfaces"
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_providers
+      - type: quiz
+        title: "Knowledge Check: Themes With FreeMarker"
+        path: sections/section-040/quiz.yaml
+        pass_score: 70
+      - type: quiz
+        title: "Final Domain Quiz"
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70

@@ -1,0 +1,245 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats092-020
+course_id: ATS092
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "Custom Authenticators"
+placement:
+  position: after
+  reading: sections/section-020/capstone/labs/lab-01/question.md
+questions:
+  - id: ats092-020-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the DISABLED requirement"
+    source_readings:
+      - sections/section-020/module-01/course-01-flows-executions-and-requirements.md
+    prompt: "What does Keycloak do with an execution whose requirement is `DISABLED`?"
+    options:
+      - id: a
+        text: "It never runs the step, so the step can never refuse anyone."
+        explanation: "Correct. `DISABLED` is the quietest way to switch a check off."
+      - id: b
+        text: "It runs the step and ignores a failure."
+        explanation: "Not correct. A disabled step does not run at all."
+      - id: c
+        text: "It runs the step only for the user `admin`."
+        explanation: "Not correct. Requirements do not depend on the user name."
+      - id: d
+        text: "It deletes the step from the flow."
+        explanation: "Not correct. The step stays in the flow, it just does not run."
+    correct_option: a
+    explanation: "Correct. `DISABLED` is the quietest way to switch a check off."
+
+  - id: ats092-020-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Bind a flow to one client"
+    source_readings:
+      - sections/section-020/module-01/course-01-flows-executions-and-requirements.md
+    prompt: "Which client setting gives one client a different direct grant flow without changing the realm's binding?"
+    options:
+      - id: a
+        text: "`directGrantFlow` on the realm."
+        explanation: "Not correct. This is the realm binding and changes every client."
+      - id: b
+        text: "`eventsListeners` on the realm."
+        explanation: "Not correct. This lists event listeners, not flows."
+      - id: c
+        text: "`loginTheme` on the client."
+        explanation: "Not correct. A theme changes how pages look, not which flow runs."
+      - id: d
+        text: "`authenticationFlowBindingOverrides`, which maps `direct_grant` to a flow id."
+        explanation: "Correct. The override only affects that client."
+    correct_option: d
+    explanation: "Correct. The override only affects that client."
+
+  - id: ats092-020-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "End authenticate() correctly"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "How must every path through `authenticate()` end?"
+    options:
+      - id: a
+        text: "With a `return null`."
+        explanation: "Not correct. Returning without an answer leaves the flow without a result."
+      - id: b
+        text: "With a restart of the Keycloak pod."
+        explanation: "Not correct. A pod restart is never part of a flow step."
+      - id: c
+        text: "With a call to `context.success()` or `context.failure(error, response)`."
+        explanation: "Correct. Keycloak needs one of the two answers to continue or stop the flow."
+      - id: d
+        text: "With an HTML login page in every case."
+        explanation: "Not correct. A direct grant has no pages, and the step must still answer."
+    correct_option: c
+    explanation: "Correct. Keycloak needs one of the two answers to continue or stop the flow."
+
+  - id: ats092-020-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Send the right failure response in a direct grant"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "What should a failing authenticator in a direct grant send to the client?"
+    options:
+      - id: a
+        text: "An HTML error page with status `200`."
+        explanation: "Not correct. The client expects JSON, not HTML."
+      - id: b
+        text: "A JSON body in the OAuth 2.0 error format, with `error` set to `invalid_grant` and status `401`."
+        explanation: "Correct. The client of a direct grant expects JSON."
+      - id: c
+        text: "An empty response with status `204`."
+        explanation: "Not correct. That signals success with no content."
+      - id: d
+        text: "A redirect to the browser login page."
+        explanation: "Not correct. A direct grant has no browser."
+    correct_option: b
+    explanation: "Correct. The client of a direct grant expects JSON."
+
+  - id: ats092-020-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use requiresUser()"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "Why does the department authenticator return `true` from `requiresUser()`?"
+    options:
+      - id: a
+        text: "The step reads the user's attribute, so Keycloak must run it only after a step has found the user."
+        explanation: "Correct. Without it the step might run before any user is known."
+      - id: b
+        text: "It makes the step show a form to the user."
+        explanation: "Not correct. The step shows no form; `action()` stays empty."
+      - id: c
+        text: "It lets the user choose the requirement."
+        explanation: "Not correct. `getRequirementChoices()` limits what an administrator may pick."
+      - id: d
+        text: "It stores the user in the factory."
+        explanation: "Not correct. The authenticator keeps no state between calls."
+    correct_option: a
+    explanation: "Correct. Without it the step might run before any user is known."
+
+  - id: ats092-020-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe the factory methods"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "What does `getRequirementChoices()` return in an `AuthenticatorFactory`?"
+    options:
+      - id: a
+        text: "The users who may pass the step."
+        explanation: "Not correct. The step decides about users in `authenticate()`."
+      - id: b
+        text: "The list of clients that may use the step."
+        explanation: "Not correct. Clients are chosen by the flow binding."
+      - id: c
+        text: "The name of the services file."
+        explanation: "Not correct. The services file is named after the factory interface."
+      - id: d
+        text: "The requirements an administrator may pick for the step, here `REQUIRED` and `DISABLED`."
+        explanation: "Correct. It limits the choices in the Admin Console and the Admin REST API."
+    correct_option: d
+    explanation: "Correct. It limits the choices in the Admin Console and the Admin REST API."
+
+  - id: ats092-020-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the services file for an authenticator"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "What is the name of the services file that registers an authenticator factory?"
+    options:
+      - id: a
+        text: "`META-INF/services/org.keycloak.authentication.Authenticator`"
+        explanation: "Not correct. This is the provider interface, not the factory interface."
+      - id: b
+        text: "`META-INF/services/require-department-attribute`"
+        explanation: "Not correct. The provider id is not a file name."
+      - id: c
+        text: "`META-INF/services/org.keycloak.authentication.AuthenticatorFactory`"
+        explanation: "Correct. The file is named after the factory interface."
+      - id: d
+        text: "`META-INF/keycloak-themes.json`"
+        explanation: "Not correct. This file lists themes."
+    correct_option: c
+    explanation: "Correct. The file is named after the factory interface."
+
+  - id: ats092-020-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Handle a new execution"
+    source_readings:
+      - sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+    prompt: "You add the execution `require-department-attribute` to a copied flow. Every user, including one without a department, still gets a token. What is the most likely reason?"
+    options:
+      - id: a
+        text: "The authenticator was not built into the JAR."
+        explanation: "Not correct. Without the JAR you could not add the execution."
+      - id: b
+        text: "A new execution starts as `DISABLED`, so the step never runs."
+        explanation: "Correct. You must set the requirement to `REQUIRED`."
+      - id: c
+        text: "A new execution starts as `ALTERNATIVE` and the user passes the password step."
+        explanation: "Not correct. A new execution starts as `DISABLED`."
+      - id: d
+        text: "The realm needs a restart to run executions."
+        explanation: "Not correct. Flows are realm data and apply at once."
+    correct_option: b
+    explanation: "Correct. You must set the requirement to `REQUIRED`."
+
+  - id: ats092-020-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Keep the priority when changing an execution"
+    source_readings:
+      - sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+    prompt: "You set an execution to `REQUIRED` with `--no-merge` and a body without its priority. Every sign-in now fails with `unknown_error`. Why?"
+    options:
+      - id: a
+        text: "The priority drops to `0`, the step moves before the username step, and it runs before Keycloak knows the user."
+        explanation: "Correct. Keycloak orders steps by `priority`, so the body must carry the current one."
+      - id: b
+        text: "`--no-merge` deletes the user from the realm."
+        explanation: "Not correct. It replaces the execution, not the users."
+      - id: c
+        text: "`REQUIRED` is not allowed for custom authenticators."
+        explanation: "Not correct. The factory allows `REQUIRED`."
+      - id: d
+        text: "The flow alias contains a space."
+        explanation: "Not correct. The space only matters in the URL path."
+    correct_option: a
+    explanation: "Correct. Keycloak orders steps by `priority`, so the body must carry the current one."
+
+  - id: ats092-020-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose a safe way to add a rule"
+    source_readings:
+      - sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+    prompt: "One client needs a stricter sign-in. Which approach changes only that client?"
+    options:
+      - id: a
+        text: "Add the step to the built-in `direct grant` flow."
+        explanation: "Not correct. Every client that uses the binding gets the rule."
+      - id: b
+        text: "Set the realm's `directGrantFlow` to the new flow."
+        explanation: "Not correct. This applies the rule to every client in the realm."
+      - id: c
+        text: "Set the override to the new flow's alias."
+        explanation: "Not correct. The override takes the flow's id, not its alias."
+      - id: d
+        text: "Copy the built-in flow, add the step to the copy, and set the client's override to the copy's id."
+        explanation: "Correct. The realm binding and other clients stay unchanged."
+    correct_option: d
+    explanation: "Correct. The realm binding and other clients stay unchanged."

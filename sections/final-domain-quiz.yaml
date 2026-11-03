@@ -1,0 +1,288 @@
+# Final domain knowledge check across all four sections.
+schema_version: 1
+kind: question_bank
+id: ats092-final
+course_id: ATS092
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: keycloak-development-spi-customization
+  title: "Keycloak: Development & SPI Customization"
+questions:
+  - id: ats092-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain how Keycloak finds a factory"
+    source_readings:
+      - sections/section-010/module-01/course-01-what-an-spi-is.md
+    prompt: "How does Keycloak find the factory classes in a provider JAR?"
+    options:
+      - id: a
+        text: "With Java's `ServiceLoader`, which reads files under `META-INF/services/` in the JAR."
+        explanation: "Correct. Keycloak does not scan the JAR for classes."
+      - id: b
+        text: "It scans every class in the JAR for the word Factory."
+        explanation: "Not correct. Keycloak does not scan classes."
+      - id: c
+        text: "It reads the class names from the `pom.xml`."
+        explanation: "Not correct. The `pom.xml` is only used at build time."
+      - id: d
+        text: "It reads the factory name from the realm settings."
+        explanation: "Not correct. Realm settings come after the factory is loaded."
+    correct_option: a
+    explanation: "Correct. Keycloak does not scan the JAR for classes."
+
+  - id: ats092-final-q02
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a provider that is missing with a clean log"
+    source_readings:
+      - sections/section-010/module-01/course-03-loading-providers.md
+    prompt: "The build Job succeeded, the JAR is in the providers directory, Keycloak was restarted and starts without an error, but the endpoint answers `404`. What is the most likely cause?"
+    options:
+      - id: a
+        text: "The services file names a class that does not exist."
+        explanation: "Not correct. That makes the build at start fail, and the pod restarts again and again."
+      - id: b
+        text: "The `tester` pod has no network access."
+        explanation: "Not correct. A blocked network gives a connection error, not a `404` from Keycloak."
+      - id: c
+        text: "Keycloak must be started with `--optimized` to load JARs."
+        explanation: "Not correct. `--optimized` skips the build and would not load a new JAR."
+      - id: d
+        text: "The services file has the wrong name, so `ServiceLoader` never opened it."
+        explanation: "Correct. A misnamed file gives no error; the provider id is just missing from the server info."
+    correct_option: d
+    explanation: "Correct. A misnamed file gives no error; the provider id is just missing from the server info."
+
+  - id: ats092-final-q03
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Load providers in production"
+    source_readings:
+      - sections/section-010/module-01/course-03-loading-providers.md
+    prompt: "A production server starts with `--optimized`. How does a changed provider JAR get loaded?"
+    options:
+      - id: a
+        text: "Restart the pod; the restart reads the providers directory."
+        explanation: "Not correct. An optimized server does not build at start."
+      - id: b
+        text: "Send a request to `/realms/master/reload`."
+        explanation: "Not correct. Keycloak has no such reload endpoint for providers."
+      - id: c
+        text: "Build a new image that runs `kc.sh build` with the JAR in the providers directory."
+        explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."
+      - id: d
+        text: "Change the realm's `loginTheme` setting."
+        explanation: "Not correct. Realm settings do not load JARs."
+    correct_option: c
+    explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."
+
+  - id: ats092-final-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Send the right failure response in a direct grant"
+    source_readings:
+      - sections/section-020/module-01/course-02-writing-an-authenticator.md
+    prompt: "What should a failing authenticator in a direct grant send to the client?"
+    options:
+      - id: a
+        text: "An HTML error page with status `200`."
+        explanation: "Not correct. The client expects JSON, not HTML."
+      - id: b
+        text: "A JSON body in the OAuth 2.0 error format, with `error` set to `invalid_grant` and status `401`."
+        explanation: "Correct. The client of a direct grant expects JSON."
+      - id: c
+        text: "An empty response with status `204`."
+        explanation: "Not correct. That signals success with no content."
+      - id: d
+        text: "A redirect to the browser login page."
+        explanation: "Not correct. A direct grant has no browser."
+    correct_option: b
+    explanation: "Correct. The client of a direct grant expects JSON."
+
+  - id: ats092-final-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Handle a new execution"
+    source_readings:
+      - sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+    prompt: "You add the execution `require-department-attribute` to a copied flow. Every user, including one without a department, still gets a token. What is the most likely reason?"
+    options:
+      - id: a
+        text: "A new execution starts as `DISABLED`, so the step never runs."
+        explanation: "Correct. You must set the requirement to `REQUIRED`."
+      - id: b
+        text: "The authenticator was not built into the JAR."
+        explanation: "Not correct. Without the JAR you could not add the execution."
+      - id: c
+        text: "A new execution starts as `ALTERNATIVE` and the user passes the password step."
+        explanation: "Not correct. A new execution starts as `DISABLED`."
+      - id: d
+        text: "The realm needs a restart to run executions."
+        explanation: "Not correct. Flows are realm data and apply at once."
+    correct_option: a
+    explanation: "Correct. You must set the requirement to `REQUIRED`."
+
+  - id: ats092-final-q06
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose a safe way to add a rule"
+    source_readings:
+      - sections/section-020/module-01/course-03-wiring-an-authenticator-into-a-flow.md
+    prompt: "One client needs a stricter sign-in. Which approach changes only that client?"
+    options:
+      - id: a
+        text: "Add the step to the built-in `direct grant` flow."
+        explanation: "Not correct. Every client that uses the binding gets the rule."
+      - id: b
+        text: "Set the realm's `directGrantFlow` to the new flow."
+        explanation: "Not correct. This applies the rule to every client in the realm."
+      - id: c
+        text: "Set the override to the new flow's alias."
+        explanation: "Not correct. The override takes the flow's id, not its alias."
+      - id: d
+        text: "Copy the built-in flow, add the step to the copy, and set the client's override to the copy's id."
+        explanation: "Correct. The realm binding and other clients stay unchanged."
+    correct_option: d
+    explanation: "Correct. The realm binding and other clients stay unchanged."
+
+  - id: ats092-final-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why a login is missing from the log"
+    source_readings:
+      - sections/section-030/module-01/course-01-user-events-and-admin-events.md
+    prompt: "With only `jboss-logging` enabled, a successful sign-in leaves no line in the server log. Why?"
+    options:
+      - id: a
+        text: "The `LOGIN` event is not sent for the password grant."
+        explanation: "Not correct. `LOGIN` is sent for a token request such as the password grant."
+      - id: b
+        text: "Keycloak sends events only after a restart."
+        explanation: "Not correct. Events are sent as they happen."
+      - id: c
+        text: "`jboss-logging` writes successful events at `debug`, and the server prints only `info` and above."
+        explanation: "Correct. The `LOGIN` event happened but did not reach the log."
+      - id: d
+        text: "The realm `master` must save the event first."
+        explanation: "Not correct. Saving is not needed for a listener."
+    correct_option: c
+    explanation: "Correct. The `LOGIN` event happened but did not reach the log."
+
+  - id: ats092-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain a loaded but silent listener"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "Keycloak lists `audit-log` in the server info, but a sign-in writes no `AUDIT-LOG` line. What is missing?"
+    options:
+      - id: a
+        text: "A restart of the pod after the build."
+        explanation: "Not correct. Keycloak already loaded the listener."
+      - id: b
+        text: "The realm's `eventsListeners` list does not contain `audit-log`."
+        explanation: "Correct. Each realm chooses its own listeners."
+      - id: c
+        text: "A second JAR with the same listener."
+        explanation: "Not correct. One loaded copy is enough."
+      - id: d
+        text: "A theme for the realm."
+        explanation: "Not correct. Themes do not affect events."
+    correct_option: b
+    explanation: "Correct. Each realm chooses its own listeners."
+
+  - id: ats092-final-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find the realm of an admin event"
+    source_readings:
+      - sections/section-030/module-01/course-03-enabling-a-listener-in-a-realm.md
+    prompt: "An administrator signed in to the realm `master` creates a user in the realm `inventory`. To which realm does the admin event belong?"
+    options:
+      - id: a
+        text: "`inventory`, the realm that was changed."
+        explanation: "Correct. The audit line shows `realm=inventory`."
+      - id: b
+        text: "`master`, the realm the administrator signed in to."
+        explanation: "Not correct. The event belongs to the changed realm."
+      - id: c
+        text: "Both realms get a copy of the event."
+        explanation: "Not correct. Only the changed realm gets it."
+      - id: d
+        text: "None, because admin events have no realm."
+        explanation: "Not correct. An admin event always has a realm."
+    correct_option: a
+    explanation: "Correct. The audit line shows `realm=inventory`."
+
+  - id: ats092-final-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain templates and messages"
+    source_readings:
+      - sections/section-040/module-01/course-01-theme-types-and-inheritance.md
+    prompt: "In `${msg(\"loginAccountTitle\")}`, what decides the text that is shown?"
+    options:
+      - id: a
+        text: "The FreeMarker template alone."
+        explanation: "Not correct. The template only holds the key."
+      - id: b
+        text: "The realm's name."
+        explanation: "Not correct. The realm's name does not change the message."
+      - id: c
+        text: "The Keycloak pod's name."
+        explanation: "Not correct. Pod names play no part."
+      - id: d
+        text: "The message file for the user's language, such as `messages_en.properties`."
+        explanation: "Correct. The template decides where, the message file decides what."
+    correct_option: d
+    explanation: "Correct. The template decides where, the message file decides what."
+
+  - id: ats092-final-q11
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Mount a ConfigMap as a theme"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-theme-in-a-mounted-directory.md
+    prompt: "Why does the theme volume use `items` with a `path` for each key?"
+    options:
+      - id: a
+        text: "`items` encrypts the files."
+        explanation: "Not correct. It only maps keys to paths."
+      - id: b
+        text: "`items` makes Keycloak cache the theme."
+        explanation: "Not correct. Caching is a server setting."
+      - id: c
+        text: "A ConfigMap volume is flat by default, and the theme needs folders such as `messages/`."
+        explanation: "Correct. `items` maps each key to a path below the mount point."
+      - id: d
+        text: "`items` selects the theme for the realm."
+        explanation: "Not correct. The realm's `loginTheme` selects it."
+    correct_option: c
+    explanation: "Correct. `items` maps each key to a path below the mount point."
+
+  - id: ats092-final-q12
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Check both halves of one JAR"
+    source_readings:
+      - sections/section-040/module-01/course-03-packaging-a-theme-in-a-jar.md
+    prompt: "A JAR holds a theme and an event listener. The theme shows on the login page, but `audit-log` is missing from the provider list. Where do you look?"
+    options:
+      - id: a
+        text: "At `keycloak-themes.json`, because it registers providers."
+        explanation: "Not correct. It lists only themes."
+      - id: b
+        text: "At the services file, because the two halves of the JAR can fail independently."
+        explanation: "Correct. A misnamed services file hides the provider while the theme works."
+      - id: c
+        text: "At the realm's `loginTheme`, because it loads providers."
+        explanation: "Not correct. It selects a theme only."
+      - id: d
+        text: "At the Keycloak version in the `pom.xml` of the theme."
+        explanation: "Not correct. The theme half works, so the build is fine."
+    correct_option: b
+    explanation: "Correct. A misnamed services file hides the provider while the theme works."
