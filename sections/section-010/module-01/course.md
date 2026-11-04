@@ -6,7 +6,7 @@ A Service Provider Interface (SPI) is a Java interface that Keycloak defines for
 
 Keep one sentence in mind: **Keycloak finds a factory only through `META-INF/services`, and only when it starts.** A class that is not listed there does not exist for Keycloak, and a new JAR does nothing until the next start.
 
-The module has three parts. **What A Service Provider Interface Is** looks at the SPIs and providers a running Keycloak already has, and explains how a factory, a provider and a `KeycloakSession` work together. **Writing A Provider And Its Factory** writes the endpoint, its factory and the services file, and builds them into a JAR inside the cluster. **Loading Providers Into Keycloak** proves that Keycloak loaded the JAR, explains what happens at start, and shows how production images do the same with `kc.sh build`. A graded lab follows the third part.
+The module has five parts. **What A Service Provider Interface Is** looks at the SPIs and providers a running Keycloak already has, and explains how a factory, a provider and a `KeycloakSession` work together. **Writing A Provider And Its Factory** writes the endpoint, its factory and the services file, and builds them into a JAR inside the cluster. **Loading Providers Into Keycloak** proves that Keycloak loaded the JAR, explains what happens at start, and shows how production images do the same with `kc.sh build`. A graded lab follows the third part. Two more parts follow: **Provider Lifecycle And KeycloakSession** explains when Keycloak calls each factory and provider method, and **Dependencies And Packaging A Provider JAR** explains Maven scopes, shaded libraries and how to check the JAR.
 
 ## Learning objectives
 

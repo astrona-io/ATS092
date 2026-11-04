@@ -15,7 +15,7 @@ This section teaches the parts of a theme that matter in practice: the theme typ
 
 ## The learning path
 
-Work through the module in order. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
+Work through the module in order. It has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
 
 ### 1. Change The Login Page With A Theme
 

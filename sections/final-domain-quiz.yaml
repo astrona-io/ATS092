@@ -286,3 +286,95 @@ questions:
         explanation: "Not correct. The theme half works, so the build is fine."
     correct_option: b
     explanation: "Correct. A misnamed services file hides the provider while the theme works."
+
+  - id: ats092-final-q61
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know the factory lifecycle"
+    source_readings:
+      - sections/section-010/module-01/course-04-provider-lifecycle-and-keycloaksession.md
+    prompt: "How often does Keycloak call `create` on a factory, compared with `init`?"
+    options:
+      - id: a
+        text: "`init` runs once at start and `create` runs for each session that needs the provider."
+        explanation: "Correct. Both run once per server."
+      - id: b
+        text: "`create` runs once, `init` runs per request."
+        explanation: "Not correct. The order is the other way round."
+      - id: c
+        text: "`init` runs for each request."
+        explanation: "Not correct. `init` runs once at start."
+      - id: d
+        text: "`create` runs only when the server stops."
+        explanation: "Not correct. `close` runs at stop."
+    correct_option: a
+    explanation: "Correct. The factory is shared and the provider is per session."
+
+  - id: ats092-final-q62
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Attach a configuration to a step"
+    source_readings:
+      - sections/section-020/module-01/course-05-authenticator-configuration.md
+    prompt: "How does an administrator change the rule of a configurable authenticator without a new JAR?"
+    options:
+      - id: a
+        text: "By saving a configuration for the execution, in the admin console or with `POST /authentication/executions/{id}/config`."
+        explanation: "Correct. The authenticator reads it on each run."
+      - id: b
+        text: "By editing `META-INF/services`."
+        explanation: "Not correct. This file is read only at start."
+      - id: c
+        text: "By restarting the Keycloak pod."
+        explanation: "Not correct. A restart is not needed."
+      - id: d
+        text: "By changing the realm name."
+        explanation: "Not correct. This has no effect."
+    correct_option: a
+    explanation: "Correct. The configuration belongs to one execution."
+
+  - id: ats092-final-q63
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Know how listener failures behave"
+    source_readings:
+      - sections/section-030/module-01/course-05-failures-and-transactions.md
+    prompt: "A listener throws an exception while handling a `LOGIN` event. What does the user see?"
+    options:
+      - id: a
+        text: "The sign-in fails with an error page."
+        explanation: "Not correct. The request is not cancelled."
+      - id: b
+        text: "The sign-in succeeds and the error is only in the server log."
+        explanation: "Correct. Keycloak catches the exception and logs it."
+      - id: c
+        text: "The listener is removed from the realm."
+        explanation: "Not correct. The realm settings do not change."
+      - id: d
+        text: "The server restarts."
+        explanation: "Not correct. The server keeps running."
+    correct_option: b
+    explanation: "Correct. A failing listener cannot cancel the user's request."
+
+  - id: ats092-final-q64
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Reference theme resources"
+    source_readings:
+      - sections/section-040/module-01/course-05-resources-and-localisation.md
+    prompt: "Which expression gives a template the address of a static file in the theme?"
+    options:
+      - id: a
+        text: "`${url.resourcesPath}/img/logo.png`"
+        explanation: "Correct. The value includes a version."
+      - id: b
+        text: "`/opt/keycloak/themes/inventory/login/resources/img/logo.png`"
+        explanation: "Not correct. A browser cannot open a path inside the container."
+      - id: c
+        text: "`${realm.name}/logo.png`"
+        explanation: "Not correct. The realm name is not a resource path."
+      - id: d
+        text: "`file://img/logo.png`"
+        explanation: "Not correct. A browser cannot open this."
+    correct_option: a
+    explanation: "Correct. Use `url.resourcesPath` for every static file."

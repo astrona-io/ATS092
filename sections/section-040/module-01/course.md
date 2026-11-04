@@ -6,7 +6,7 @@ A **theme** is a set of FreeMarker templates, message files and static files tha
 
 Keep one sentence in mind: **override the smallest thing that does the job.** One message in a message file survives Keycloak upgrades; a copied template has to be compared with the new version on every upgrade.
 
-The module has three parts. **Theme Types And How Keycloak Finds A Theme** lists the themes Keycloak has, explains `parent` and the lookup order, and reads the current heading from the login page. **A Theme In A Mounted Directory** writes the theme, mounts it from a ConfigMap and selects it for the realm. **Packaging A Theme In A JAR** puts a theme in a JAR with `META-INF/keycloak-themes.json`, the way it ships next to providers. A graded lab follows the second part.
+The module has five parts. **Theme Types And How Keycloak Finds A Theme** lists the themes Keycloak has, explains `parent` and the lookup order, and reads the current heading from the login page. **A Theme In A Mounted Directory** writes the theme, mounts it from a ConfigMap and selects it for the realm. **Packaging A Theme In A JAR** puts a theme in a JAR with `META-INF/keycloak-themes.json`, the way it ships next to providers. A graded lab follows the second part. Two more parts follow: **FreeMarker Templates** covers the syntax, the layout macro and the template objects, and **Resources, Styles And Localisation** covers static files, style sheets and a second language.
 
 ## Learning objectives
 

@@ -6,7 +6,7 @@ An **authentication flow** is an ordered list of steps that Keycloak runs to sig
 
 Keep one sentence in mind: **an authenticator does nothing until an execution in a flow uses it, and the flow does nothing until something binds it.** Code, flow and binding are three separate places, and each one can be wrong.
 
-The module has three parts. **Authentication Flows, Executions And Requirements** reads the realm's flows and the executions of the direct grant flow with `kcadm.sh`. **Writing An Authenticator And Its Factory** writes the Java code, with requirement choices and a configuration property, and builds it into Keycloak. **Wiring An Authenticator Into A Flow** copies the direct grant flow, adds the new step, binds the copy to `inventory-cli` and proves the rule with two users. A graded lab follows the third part.
+The module has five parts. **Authentication Flows, Executions And Requirements** reads the realm's flows and the executions of the direct grant flow with `kcadm.sh`. **Writing An Authenticator And Its Factory** writes the Java code, with requirement choices and a configuration property, and builds it into Keycloak. **Wiring An Authenticator Into A Flow** copies the direct grant flow, adds the new step, binds the copy to `inventory-cli` and proves the rule with two users. A graded lab follows the third part. Two more parts follow: **Showing A Form From An Authenticator** covers challenges, the outcomes of a step and `LoginFormsProvider`, and **Authenticator Configuration** covers settings declared by the factory and attached to an execution.
 
 ## Learning objectives
 

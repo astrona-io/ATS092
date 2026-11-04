@@ -101,8 +101,51 @@ modules:
           - name: "Server Developer Guide: custom REST endpoints"
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_extensions_rest
       - type: reading
+        title: "Provider Lifecycle And KeycloakSession"
+        path: sections/section-010/module-01/course-04-provider-lifecycle-and-keycloaksession.md
+      - type: reading
+        title: "Dependencies And Packaging A Provider JAR"
+        path: sections/section-010/module-01/course-05-dependencies-and-packaging.md
+      - type: reading
         title: Summary
-        path: sections/section-010/module-01/course-04-summary.md
+        path: sections/section-010/module-01/course-06-summary.md
+
+      - type: reading
+        title: "Configure A Provider Without Rebuilding It"
+        path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "Where Provider Settings Come From"
+        path: sections/section-010/module-02/course-01-where-provider-settings-come-from.md
+      - type: reading
+        title: "Reading Settings In A Factory"
+        path: sections/section-010/module-02/course-02-reading-settings-in-a-factory.md
+      - type: reading
+        title: "Enabling, Disabling And Choosing Providers"
+        path: sections/section-010/module-02/course-03-enabling-disabling-and-choosing-providers.md
+      - type: reading
+        title: "Supplying Settings In Kubernetes"
+        path: sections/section-010/module-02/course-04-supplying-settings-in-kubernetes.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Fix A Provider Setting That Is Ignored Lab"
+        path: sections/section-010/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: provider-configuration
+        task_kind: troubleshooting
+        tags: [spi-configuration, config-scope, environment-variables, serverinfo, kubectl-set-env]
+        learning_goals:
+          - Find why a provider setting has no effect
+          - Rename the environment variable according to the SPI name and provider id
+          - Prove the setting with the endpoint response
+        resources:
+          - name: "Configuring providers"
+            url: https://www.keycloak.org/server/configuration-provider
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-02/course-05-summary.md
 
       - type: reading
         title: Question
@@ -174,8 +217,53 @@ modules:
           - name: "Server Developer Guide: Authentication SPI"
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi
       - type: reading
+        title: "Showing A Form From An Authenticator"
+        path: sections/section-020/module-01/course-04-forms-and-challenges.md
+      - type: reading
+        title: "Authenticator Configuration"
+        path: sections/section-020/module-01/course-05-authenticator-configuration.md
+      - type: reading
         title: Summary
-        path: sections/section-020/module-01/course-04-summary.md
+        path: sections/section-020/module-01/course-06-summary.md
+
+      - type: reading
+        title: "Add A Required Action To The Sign-In"
+        path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "What A Required Action Is"
+        path: sections/section-020/module-02/course-01-what-a-required-action-is.md
+      - type: reading
+        title: "Writing A Required Action Provider"
+        path: sections/section-020/module-02/course-02-writing-a-required-action-provider.md
+      - type: reading
+        title: "Registering And Assigning A Required Action"
+        path: sections/section-020/module-02/course-03-registering-and-assigning-a-required-action.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Register A Required Action Lab"
+        path: sections/section-020/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: required-actions
+        task_kind: troubleshooting
+        tags: [required-action, required-action-factory, meta-inf-services, kcadm, register-required-action]
+        learning_goals:
+          - Find why Keycloak does not load a required action factory
+          - Register and enable the action in the realm
+          - Assign the action to one user only
+        resources:
+          - name: "Server Developer Guide: Required Actions"
+            url: https://www.keycloak.org/docs/latest/server_development/index.html#_auth_spi
+          - name: "Server Administration Guide: required actions"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#con-required-actions_server_administration_guide
+      - type: reading
+        title: "Triggers, Forms And Completing An Action"
+        path: sections/section-020/module-02/course-04-triggers-forms-and-completing-an-action.md
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-02/course-05-summary.md
 
       - type: reading
         title: Question
@@ -247,8 +335,14 @@ modules:
           - name: "Server Developer Guide: Event Listener SPI"
             url: https://www.keycloak.org/docs/latest/server_development/index.html#_events
       - type: reading
+        title: "Event Types And Event Details"
+        path: sections/section-030/module-01/course-04-event-types-and-details.md
+      - type: reading
+        title: "Failures And Transactions In Listeners"
+        path: sections/section-030/module-01/course-05-failures-and-transactions.md
+      - type: reading
         title: Summary
-        path: sections/section-030/module-01/course-04-summary.md
+        path: sections/section-030/module-01/course-06-summary.md
 
       - type: reading
         title: Question
@@ -318,8 +412,14 @@ modules:
         title: "Packaging A Theme In A JAR"
         path: sections/section-040/module-01/course-03-packaging-a-theme-in-a-jar.md
       - type: reading
+        title: "FreeMarker Templates"
+        path: sections/section-040/module-01/course-04-freemarker-templates.md
+      - type: reading
+        title: "Resources, Styles And Localisation"
+        path: sections/section-040/module-01/course-05-resources-and-localisation.md
+      - type: reading
         title: Summary
-        path: sections/section-040/module-01/course-04-summary.md
+        path: sections/section-040/module-01/course-06-summary.md
 
       - type: reading
         title: Question

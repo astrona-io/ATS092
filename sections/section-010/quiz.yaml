@@ -243,3 +243,325 @@ questions:
         explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."
     correct_option: d
     explanation: "Correct. With `--optimized` the build at start is skipped, so only a new build loads providers."
+
+  - id: ats092-010-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Order the factory methods"
+    source_readings:
+      - sections/section-010/module-01/course-04-provider-lifecycle-and-keycloaksession.md
+    prompt: "In which order does Keycloak call the methods of a provider factory at server start?"
+    options:
+      - id: a
+        text: "`init`, then `postInit`, and `create` when a provider is needed."
+        explanation: "Correct. The factory is configured first and used afterwards."
+      - id: b
+        text: "`create`, then `init`, then `postInit`."
+        explanation: "Not correct. `create` needs a configured factory."
+      - id: c
+        text: "`postInit`, then `init`."
+        explanation: "Not correct. `init` runs first."
+      - id: d
+        text: "`close`, then `init`."
+        explanation: "Not correct. `close` runs when the server stops."
+    correct_option: a
+    explanation: "Correct. `init` and `postInit` run once at start, and `create` runs per session."
+
+  - id: ats092-010-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "State kept in a factory"
+    source_readings:
+      - sections/section-010/module-01/course-04-provider-lifecycle-and-keycloaksession.md
+    prompt: "Why must a factory not keep data that belongs to one request?"
+    options:
+      - id: a
+        text: "The factory is created once and shared by every request."
+        explanation: "Correct. Data of one request would leak into another."
+      - id: b
+        text: "The factory is deleted after each request."
+        explanation: "Not correct. The factory lives until the server stops."
+      - id: c
+        text: "A factory cannot have fields."
+        explanation: "Not correct. A factory can have fields."
+      - id: d
+        text: "Keycloak copies the factory for each user."
+        explanation: "Not correct. Keycloak creates one factory instance."
+    correct_option: a
+    explanation: "Correct. One factory instance serves all requests."
+
+  - id: ats092-010-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Dependency scope"
+    source_readings:
+      - sections/section-010/module-01/course-05-dependencies-and-packaging.md
+    prompt: "Which Maven scope should the Keycloak artifacts have in a provider project?"
+    options:
+      - id: a
+        text: "`provided`"
+        explanation: "Correct. The server already contains these classes."
+      - id: b
+        text: "`compile`, so they are packed into the JAR."
+        explanation: "Not correct. This can clash with the classes of the server."
+      - id: c
+        text: "`test`"
+        explanation: "Not correct. The classes are needed to compile the main code."
+      - id: d
+        text: "`runtime`"
+        explanation: "Not correct. They are needed at compile time as well."
+    correct_option: a
+    explanation: "Correct. The classes exist in the running server, so they are not packed."
+
+  - id: ats092-010-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Third-party library"
+    source_readings:
+      - sections/section-010/module-01/course-05-dependencies-and-packaging.md
+    prompt: "Your provider uses a library that Keycloak does not ship. What must you do?"
+    options:
+      - id: a
+        text: "Put the library in the JAR, for example with the Maven Shade plugin, or add its JAR to the providers directory."
+        explanation: "Correct. The library must be on the server's classpath at runtime."
+      - id: b
+        text: "Nothing, because Keycloak downloads it."
+        explanation: "Not correct. Keycloak does not download dependencies."
+      - id: c
+        text: "Add it with `provided` scope."
+        explanation: "Not correct. A provided library is not packed."
+      - id: d
+        text: "Rename the library JAR to `.zip`."
+        explanation: "Not correct. The extension does not matter here."
+    correct_option: a
+    explanation: "Correct. A missing runtime library gives a `ClassNotFoundException`."
+
+  - id: ats092-010-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name a provider setting"
+    source_readings:
+      - sections/section-010/module-02/course-01-where-provider-settings-come-from.md
+    prompt: "Which environment variable sets the key `mode` of the provider `inventory-status` of the SPI `realm-restapi-extension`?"
+    options:
+      - id: a
+        text: "`KC_SPI_REALM_RESTAPI_EXTENSION_INVENTORY_STATUS_MODE`"
+        explanation: "Not correct. The parts must be separated by two underscores."
+      - id: b
+        text: "`KC_REALM_RESTAPI_EXTENSION__INVENTORY_STATUS__MODE`"
+        explanation: "Not correct. The name must start with `KC_SPI_`."
+      - id: c
+        text: "`KC_SPI_REALM_RESTAPI_EXTENSION__INVENTORY_STATUS__MODE`"
+        explanation: "Correct. The three parts are separated by two underscores."
+      - id: d
+        text: "`SPI_INVENTORY_STATUS_MODE`"
+        explanation: "Not correct. The name must start with `KC_SPI_` and include the SPI."
+    correct_option: c
+    explanation: "Correct. Prefix, upper case, underscores inside parts, two underscores between parts."
+
+  - id: ats092-010-q16
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Source order"
+    source_readings:
+      - sections/section-010/module-02/course-01-where-provider-settings-come-from.md
+    prompt: "Which source of a setting wins when the command line, the environment and `keycloak.conf` all set it?"
+    options:
+      - id: a
+        text: "The command line."
+        explanation: "Correct. Keycloak reads the command line first."
+      - id: b
+        text: "`keycloak.conf`."
+        explanation: "Not correct. The file has the lowest priority."
+      - id: c
+        text: "The environment."
+        explanation: "Not correct. The command line beats the environment."
+      - id: d
+        text: "The last one Keycloak finds on disk."
+        explanation: "Not correct. The order is fixed."
+    correct_option: a
+    explanation: "Correct. Command line, then environment, then file."
+
+  - id: ats092-010-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Unknown setting names"
+    source_readings:
+      - sections/section-010/module-02/course-01-where-provider-settings-come-from.md
+    prompt: "A setting name matches no provider. What does Keycloak do?"
+    options:
+      - id: a
+        text: "It stops with an error at start."
+        explanation: "Not correct. It does not validate names."
+      - id: b
+        text: "It disables the provider."
+        explanation: "Not correct. The provider stays enabled."
+      - id: c
+        text: "It writes the setting to the database."
+        explanation: "Not correct. Settings are not stored."
+      - id: d
+        text: "It ignores the setting and the provider keeps its default."
+        explanation: "Correct. Nothing reads the value."
+    correct_option: d
+    explanation: "Correct. A wrong name has no visible error."
+
+  - id: ats092-010-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read a setting"
+    source_readings:
+      - sections/section-010/module-02/course-02-reading-settings-in-a-factory.md
+    prompt: "In which factory method should a provider read its settings?"
+    options:
+      - id: a
+        text: "`create`, for every request."
+        explanation: "Not correct. `create` runs for each session."
+      - id: b
+        text: "`init`, once at start."
+        explanation: "Correct. `init` receives the `Config.Scope`."
+      - id: c
+        text: "`close`, at shutdown."
+        explanation: "Not correct. `close` is too late."
+      - id: d
+        text: "`getId`, with the id."
+        explanation: "Not correct. `getId` only returns the id."
+    correct_option: b
+    explanation: "Correct. Read once in `init` and keep the value in a field."
+
+  - id: ats092-010-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Key in the scope"
+    source_readings:
+      - sections/section-010/module-02/course-02-reading-settings-in-a-factory.md
+    prompt: "Which key does the code pass to `config.get(...)` for the setting `--spi-realm-restapi-extension--inventory-status--mode`?"
+    options:
+      - id: a
+        text: "The full setting name."
+        explanation: "Not correct. The scope holds only this provider's settings."
+      - id: b
+        text: "`inventory-status--mode`."
+        explanation: "Not correct. The provider id is already part of the scope."
+      - id: c
+        text: "`mode`."
+        explanation: "Correct. Only the short key is needed."
+      - id: d
+        text: "`spi-mode`."
+        explanation: "Not correct. The prefix is not part of the key."
+    correct_option: c
+    explanation: "Correct. The scope is already narrowed to the provider."
+
+  - id: ats092-010-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Default values"
+    source_readings:
+      - sections/section-010/module-02/course-02-reading-settings-in-a-factory.md
+    prompt: "Why should a provider pass a default to `config.get`?"
+    options:
+      - id: a
+        text: "It still works when the administrator sets nothing."
+        explanation: "Correct. Without a default, the value is `null`."
+      - id: b
+        text: "Keycloak refuses to start without one."
+        explanation: "Not correct. There is no such rule."
+      - id: c
+        text: "The default is stored in the realm."
+        explanation: "Not correct. Defaults stay in the code."
+      - id: d
+        text: "The default speeds up the start."
+        explanation: "Not correct. Defaults have no speed effect."
+    correct_option: a
+    explanation: "Correct. A missing setting must not break the provider."
+
+  - id: ats092-010-q21
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Disable a provider"
+    source_readings:
+      - sections/section-010/module-02/course-03-enabling-disabling-and-choosing-providers.md
+    prompt: "Which setting switches off a provider but keeps its JAR loaded?"
+    options:
+      - id: a
+        text: "`delete=true`"
+        explanation: "Not correct. No such setting exists."
+      - id: b
+        text: "`provider=none`"
+        explanation: "Not correct. `provider` chooses a default."
+      - id: c
+        text: "`order=0`"
+        explanation: "Not correct. `order` does not disable."
+      - id: d
+        text: "`enabled=false`"
+        explanation: "Correct. Every provider accepts `enabled`."
+    correct_option: d
+    explanation: "Correct. The factory is not used while `enabled` is false."
+
+  - id: ats092-010-q22
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Default provider"
+    source_readings:
+      - sections/section-010/module-02/course-03-enabling-disabling-and-choosing-providers.md
+    prompt: "Two providers of one SPI exist and no `provider` setting is present. Which does Keycloak use?"
+    options:
+      - id: a
+        text: "The one with the smaller JAR file."
+        explanation: "Not correct. File size is not used."
+      - id: b
+        text: "The factory whose `order()` returns the highest number."
+        explanation: "Correct. `order()` breaks the tie."
+      - id: c
+        text: "The one loaded last."
+        explanation: "Not correct. Load order is not used."
+      - id: d
+        text: "Both at the same time."
+        explanation: "Not correct. Only SPIs such as event listeners use all providers."
+    correct_option: b
+    explanation: "Correct. Set `provider` explicitly when it matters."
+
+  - id: ats092-010-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Secret values"
+    source_readings:
+      - sections/section-010/module-02/course-04-supplying-settings-in-kubernetes.md
+    prompt: "Where should a secret setting value come from in a Deployment?"
+    options:
+      - id: a
+        text: "A plain `value` in the `env` entry."
+        explanation: "Not correct. Anyone who reads the Deployment sees it."
+      - id: b
+        text: "A ConfigMap key."
+        explanation: "Not correct. A ConfigMap is not for secrets."
+      - id: c
+        text: "A Secret, through `secretKeyRef`."
+        explanation: "Correct. A Secret is the right object for secret values."
+      - id: d
+        text: "The container image."
+        explanation: "Not correct. An image should not hold secrets."
+    correct_option: c
+    explanation: "Correct. Use `valueFrom` with `secretKeyRef`."
+
+  - id: ats092-010-q24
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Mounting keycloak.conf"
+    source_readings:
+      - sections/section-010/module-02/course-04-supplying-settings-in-kubernetes.md
+    prompt: "Why does the volume mount of `keycloak.conf` use `subPath`?"
+    options:
+      - id: a
+        text: "So it replaces one file without hiding the rest of the `conf` directory."
+        explanation: "Correct. Without `subPath` the whole directory is replaced."
+      - id: b
+        text: "So the file is read-only for root."
+        explanation: "Not correct. `subPath` does not set permissions."
+      - id: c
+        text: "So Keycloak reloads it without a restart."
+        explanation: "Not correct. A restart is still needed."
+      - id: d
+        text: "So the file is stored in the database."
+        explanation: "Not correct. Files stay on the volume."
+    correct_option: a
+    explanation: "Correct. Mount one file, not the directory."

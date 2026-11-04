@@ -243,3 +243,325 @@ questions:
         explanation: "Correct. The realm binding and other clients stay unchanged."
     correct_option: d
     explanation: "Correct. The realm binding and other clients stay unchanged."
+
+  - id: ats092-020-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Challenge"
+    source_readings:
+      - sections/section-020/module-01/course-04-forms-and-challenges.md
+    prompt: "Which call makes an authenticator show a page and wait for the form post?"
+    options:
+      - id: a
+        text: "`context.challenge(response)`"
+        explanation: "Correct. Keycloak then calls `action` after the post."
+      - id: b
+        text: "`context.success()`"
+        explanation: "Not correct. This accepts the step."
+      - id: c
+        text: "`context.attempted()`"
+        explanation: "Not correct. This skips the step."
+      - id: d
+        text: "`context.failure(error)`"
+        explanation: "Not correct. This ends the flow with an error."
+    correct_option: a
+    explanation: "Correct. A challenge returns a page to the browser."
+
+  - id: ats092-020-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Wrong value on a form"
+    source_readings:
+      - sections/section-020/module-01/course-04-forms-and-challenges.md
+    prompt: "A user types a wrong value on the form of your authenticator. Which call shows the form again with an error?"
+    options:
+      - id: a
+        text: "`context.failureChallenge(error, response)`"
+        explanation: "Correct. It combines the error with a page."
+      - id: b
+        text: "`context.success()`"
+        explanation: "Not correct. This accepts the value."
+      - id: c
+        text: "`context.attempted()`"
+        explanation: "Not correct. This skips the step."
+      - id: d
+        text: "`context.forceChallenge(response)`"
+        explanation: "Not correct. This does not report an error."
+    correct_option: a
+    explanation: "Correct. `failureChallenge` shows the page again with the error."
+
+  - id: ats092-020-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Configuration of a step"
+    source_readings:
+      - sections/section-020/module-01/course-05-authenticator-configuration.md
+    prompt: "What does `context.getAuthenticatorConfig()` return when the administrator saved no configuration for the step?"
+    options:
+      - id: a
+        text: "`null`"
+        explanation: "Correct. The code must check for it."
+      - id: b
+        text: "An empty map."
+        explanation: "Not correct. It returns `null`, not a model."
+      - id: c
+        text: "The realm's default configuration."
+        explanation: "Not correct. There is no realm default."
+      - id: d
+        text: "It throws an exception."
+        explanation: "Not correct. It returns `null`."
+    correct_option: a
+    explanation: "Correct. Always check for `null` before you read the values."
+
+  - id: ats092-020-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Configurable factory"
+    source_readings:
+      - sections/section-020/module-01/course-05-authenticator-configuration.md
+    prompt: "Which interface must a factory implement to have settings in the admin console?"
+    options:
+      - id: a
+        text: "`ConfigurableAuthenticatorFactory`"
+        explanation: "Correct. It adds `getConfigProperties()`."
+      - id: b
+        text: "`RealmResourceProviderFactory`"
+        explanation: "Not correct. This is for REST endpoints."
+      - id: c
+        text: "`EventListenerProviderFactory`"
+        explanation: "Not correct. This is for event listeners."
+      - id: d
+        text: "`UserStorageProviderFactory`"
+        explanation: "Not correct. This is for user storage."
+    correct_option: a
+    explanation: "Correct. `isConfigurable()` and `getConfigProperties()` come from this interface."
+
+  - id: ats092-020-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Define a required action"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-a-required-action-is.md
+    prompt: "When does Keycloak show a required action?"
+    options:
+      - id: a
+        text: "Before the authentication flow starts."
+        explanation: "Not correct. The user is not known yet."
+      - id: b
+        text: "After the authentication flow succeeded, until the user completed it."
+        explanation: "Correct. The user is known at that point."
+      - id: c
+        text: "Only when the administrator is signed in."
+        explanation: "Not correct. Any user can have one."
+      - id: d
+        text: "Only during registration."
+        explanation: "Not correct. It can run at any sign-in."
+    correct_option: b
+    explanation: "Correct. A required action is a step for a known user."
+
+  - id: ats092-020-q16
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Alias spelling"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-a-required-action-is.md
+    prompt: "Which is the alias of the built-in password change action?"
+    options:
+      - id: a
+        text: "`update-password`"
+        explanation: "Not correct. The built-in aliases are upper case."
+      - id: b
+        text: "`UpdatePassword`"
+        explanation: "Not correct. The aliases use underscores."
+      - id: c
+        text: "`password`"
+        explanation: "Not correct. This is not an alias."
+      - id: d
+        text: "`UPDATE_PASSWORD`"
+        explanation: "Correct. Built-in aliases are upper case with underscores."
+    correct_option: d
+    explanation: "Correct. Use the alias exactly as `kcadm` lists it."
+
+  - id: ats092-020-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Password grant"
+    source_readings:
+      - sections/section-020/module-02/course-01-what-a-required-action-is.md
+    prompt: "What does a token request with the password grant return for a user who still has a required action?"
+    options:
+      - id: a
+        text: "The error `invalid_grant` with the description `Account is not fully set up`."
+        explanation: "Correct. There is no browser to show the action."
+      - id: b
+        text: "A token without roles."
+        explanation: "Not correct. A token is not issued."
+      - id: c
+        text: "A redirect to a login page."
+        explanation: "Not correct. The token endpoint returns JSON."
+      - id: d
+        text: "The required action is completed automatically."
+        explanation: "Not correct. Only a page can complete it."
+    correct_option: a
+    explanation: "Correct. Check the user through the Admin REST API when you test."
+
+  - id: ats092-020-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Services file name"
+    source_readings:
+      - sections/section-020/module-02/course-02-writing-a-required-action-provider.md
+    prompt: "What is the name of the services file for a required action factory?"
+    options:
+      - id: a
+        text: "`org.keycloak.authentication.RequiredActionProvider`"
+        explanation: "Not correct. This is the provider interface, not the factory."
+      - id: b
+        text: "`org.keycloak.authentication.Authenticator`"
+        explanation: "Not correct. This is for authenticators."
+      - id: c
+        text: "`org.keycloak.authentication.RequiredActionFactory`"
+        explanation: "Correct. The file is named after the factory interface."
+      - id: d
+        text: "`required-action.properties`"
+        explanation: "Not correct. Keycloak does not use this name."
+    correct_option: c
+    explanation: "Correct. The file name is the factory interface."
+
+  - id: ats092-020-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Finish an action"
+    source_readings:
+      - sections/section-020/module-02/course-02-writing-a-required-action-provider.md
+    prompt: "Which call removes the action from the user and lets the sign-in continue?"
+    options:
+      - id: a
+        text: "`context.ignore()`"
+        explanation: "Not correct. This keeps the action for the next sign-in."
+      - id: b
+        text: "`context.success()`"
+        explanation: "Correct. It completes the action."
+      - id: c
+        text: "`context.failure()`"
+        explanation: "Not correct. This ends the sign-in with an error."
+      - id: d
+        text: "`context.challenge(response)`"
+        explanation: "Not correct. This shows a page."
+    correct_option: b
+    explanation: "Correct. `success()` removes the alias from the list."
+
+  - id: ats092-020-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Loaded is not used"
+    source_readings:
+      - sections/section-020/module-02/course-02-writing-a-required-action-provider.md
+    prompt: "The server info lists `accept-terms` under `required-action`, but no user ever sees it. What is the most likely reason?"
+    options:
+      - id: a
+        text: "The JAR is too large."
+        explanation: "Not correct. Size does not matter."
+      - id: b
+        text: "The action needs a restart of the realm."
+        explanation: "Not correct. Realms have no restart."
+      - id: c
+        text: "The tester pod is stopped."
+        explanation: "Not correct. It is unrelated."
+      - id: d
+        text: "No realm registered, enabled and assigned the action."
+        explanation: "Correct. Loading is only the first step."
+    correct_option: d
+    explanation: "Correct. Load, register, enable, assign."
+
+  - id: ats092-020-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Register an action"
+    source_readings:
+      - sections/section-020/module-02/course-03-registering-and-assigning-a-required-action.md
+    prompt: "Which command registers a loaded required action in a realm?"
+    options:
+      - id: a
+        text: "`kcadm create authentication/register-required-action -s providerId=accept-terms -s name=...`"
+        explanation: "Correct. This is the registration endpoint."
+      - id: b
+        text: "`kcadm create required-actions`"
+        explanation: "Not correct. No such resource exists."
+      - id: c
+        text: "`kc.sh register accept-terms`"
+        explanation: "Not correct. `kc.sh` does not register actions."
+      - id: d
+        text: "`kcadm update realms/inventory -s requiredActions=accept-terms`"
+        explanation: "Not correct. The realm has no such field."
+    correct_option: a
+    explanation: "Correct. Use the `providerId` from the factory."
+
+  - id: ats092-020-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Replacing the list"
+    source_readings:
+      - sections/section-020/module-02/course-03-registering-and-assigning-a-required-action.md
+    prompt: "What happens to the existing actions of a user when you send `requiredActions=[\"accept-terms\"]`?"
+    options:
+      - id: a
+        text: "Keycloak adds the new alias to the list."
+        explanation: "Not correct. The value replaces the list."
+      - id: b
+        text: "Keycloak ignores the request."
+        explanation: "Not correct. The update is applied."
+      - id: c
+        text: "The list is replaced by the one you sent."
+        explanation: "Correct. Read the old list first if you want to keep it."
+      - id: d
+        text: "Keycloak asks the user to confirm."
+        explanation: "Not correct. No confirmation is asked."
+    correct_option: c
+    explanation: "Correct. The attribute is a full list."
+
+  - id: ats092-020-q23
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "evaluateTriggers"
+    source_readings:
+      - sections/section-020/module-02/course-04-triggers-forms-and-completing-an-action.md
+    prompt: "What is `evaluateTriggers` for?"
+    options:
+      - id: a
+        text: "To show the form to the user."
+        explanation: "Not correct. That is `requiredActionChallenge`."
+      - id: b
+        text: "To add the action to users who match a condition at sign-in."
+        explanation: "Correct. It runs for every user on every sign-in."
+      - id: c
+        text: "To register the action in the realm."
+        explanation: "Not correct. Registration is an admin step."
+      - id: d
+        text: "To remove the action after completion."
+        explanation: "Not correct. `success()` does that."
+    correct_option: b
+    explanation: "Correct. Keep the method fast."
+
+  - id: ats092-020-q24
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "ignore result"
+    source_readings:
+      - sections/section-020/module-02/course-04-triggers-forms-and-completing-an-action.md
+    prompt: "A mandatory action calls `context.ignore()`. What does the user experience?"
+    options:
+      - id: a
+        text: "The action stays on the user and returns at the next sign-in."
+        explanation: "Correct. `ignore()` leaves the list unchanged."
+      - id: b
+        text: "The user is blocked for ever."
+        explanation: "Not correct. The sign-in continues."
+      - id: c
+        text: "The action is removed."
+        explanation: "Not correct. Only `success()` removes it."
+      - id: d
+        text: "Keycloak shows an error page."
+        explanation: "Not correct. No error is shown."
+    correct_option: a
+    explanation: "Correct. Do not use `ignore()` for a mandatory step."

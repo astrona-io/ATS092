@@ -44,10 +44,10 @@ JAR as providers.
 
 | Module | Reader | Parts | Labs |
 | --- | --- | --- | --- |
-| 010-01 | [Build And Load Your First Keycloak Provider](sections/section-010/module-01/course.md) | 3 | [lab-01](sections/section-010/module-01/labs/lab-01) |
-| 020-01 | [Add A Custom Step To An Authentication Flow](sections/section-020/module-01/course.md) | 3 | [lab-01](sections/section-020/module-01/labs/lab-01) |
-| 030-01 | [Send Keycloak Events To Your Own Listener](sections/section-030/module-01/course.md) | 3 | [lab-01](sections/section-030/module-01/labs/lab-01) |
-| 040-01 | [Change The Login Page With A Theme](sections/section-040/module-01/course.md) | 3 | [lab-01](sections/section-040/module-01/labs/lab-01) |
+| 010-01 | [Build And Load Your First Keycloak Provider](sections/section-010/module-01/course.md) | 5 | [lab-01](sections/section-010/module-01/labs/lab-01) |
+| 020-01 | [Add A Custom Step To An Authentication Flow](sections/section-020/module-01/course.md) | 5 | [lab-01](sections/section-020/module-01/labs/lab-01) |
+| 030-01 | [Send Keycloak Events To Your Own Listener](sections/section-030/module-01/course.md) | 5 | [lab-01](sections/section-030/module-01/labs/lab-01) |
+| 040-01 | [Change The Login Page With A Theme](sections/section-040/module-01/course.md) | 5 | [lab-01](sections/section-040/module-01/labs/lab-01) |
 
 ---
 

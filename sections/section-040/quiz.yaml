@@ -243,3 +243,95 @@ questions:
         explanation: "Correct. A misnamed services file hides the provider while the theme works."
     correct_option: d
     explanation: "Correct. A misnamed services file hides the provider while the theme works."
+
+  - id: ats092-040-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Default value"
+    source_readings:
+      - sections/section-040/module-01/course-04-freemarker-templates.md
+    prompt: "How does FreeMarker print an empty string when a value is missing?"
+    options:
+      - id: a
+        text: "`${value!\"\"}`"
+        explanation: "Correct. The `!` operator gives a default."
+      - id: b
+        text: "`${value?}`"
+        explanation: "Not correct. This is not valid."
+      - id: c
+        text: "`${value or \"\"}`"
+        explanation: "Not correct. FreeMarker uses `!` for defaults."
+      - id: d
+        text: "`<#default value>`"
+        explanation: "Not correct. This directive does not exist."
+    correct_option: a
+    explanation: "Correct. Without a default, a missing value stops the template."
+
+  - id: ats092-040-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Layout sections"
+    source_readings:
+      - sections/section-040/module-01/course-04-freemarker-templates.md
+    prompt: "Which macro draws the frame of a login page in the `keycloak` theme?"
+    options:
+      - id: a
+        text: "`registrationLayout` from `template.ftl`"
+        explanation: "Correct. The page fills its named sections."
+      - id: b
+        text: "`<#include login>`"
+        explanation: "Not correct. This is not how pages are built."
+      - id: c
+        text: "`url.loginAction`"
+        explanation: "Not correct. This is a form address."
+      - id: d
+        text: "`msg`"
+        explanation: "Not correct. This returns text."
+    correct_option: a
+    explanation: "Correct. The macro draws the frame and the page fills the sections."
+
+  - id: ats092-040-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Static file address"
+    source_readings:
+      - sections/section-040/module-01/course-05-resources-and-localisation.md
+    prompt: "How does a template build the address of an image in `resources/img`?"
+    options:
+      - id: a
+        text: "With `${url.resourcesPath}/img/logo.png`."
+        explanation: "Correct. The value includes the version."
+      - id: b
+        text: "With `/themes/inventory/logo.png`."
+        explanation: "Not correct. This path is not served."
+      - id: c
+        text: "With the file path in the ConfigMap."
+        explanation: "Not correct. The browser cannot read it."
+      - id: d
+        text: "With `file:///opt/keycloak/themes`."
+        explanation: "Not correct. A browser cannot open this."
+    correct_option: a
+    explanation: "Correct. Never write the resource path by hand."
+
+  - id: ats092-040-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Second language"
+    source_readings:
+      - sections/section-040/module-01/course-05-resources-and-localisation.md
+    prompt: "Which two things turn a second language on for the login page?"
+    options:
+      - id: a
+        text: "`locales` in the theme and internationalisation in the realm."
+        explanation: "Correct. Both are needed."
+      - id: b
+        text: "Only a `messages_da.properties` file."
+        explanation: "Not correct. The realm must list the locale as well."
+      - id: c
+        text: "Only the realm setting."
+        explanation: "Not correct. The theme must list the locale."
+      - id: d
+        text: "A new Keycloak image."
+        explanation: "Not correct. No image change is needed."
+    correct_option: a
+    explanation: "Correct. The theme lists the locales and the realm enables them."

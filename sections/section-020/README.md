@@ -15,7 +15,7 @@ This section teaches the whole path, from the Java code to the user who is let i
 
 ## The learning path
 
-Work through the module in order. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
+Work through the module in order. It has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
 
 ### 1. Add A Custom Step To An Authentication Flow
 

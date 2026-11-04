@@ -6,7 +6,7 @@ An **event** is a record of something that happened in a realm. A **user event**
 
 Keep one sentence in mind: **a listener receives events only from realms that list it in their event configuration.** A loaded listener that no realm lists receives nothing.
 
-The module has three parts. **User Events And Admin Events** reads the realm's event configuration and finds the events that `jboss-logging` writes to the server log. **Writing An Event Listener** writes the listener and its factory and builds them into Keycloak. **Enabling A Listener In A Realm** turns the listener on next to `jboss-logging`, proves it with a sign-in, and adds admin events. A graded lab follows the third part.
+The module has five parts. **User Events And Admin Events** reads the realm's event configuration and finds the events that `jboss-logging` writes to the server log. **Writing An Event Listener** writes the listener and its factory and builds them into Keycloak. **Enabling A Listener In A Realm** turns the listener on next to `jboss-logging`, proves it with a sign-in, and adds admin events. A graded lab follows the third part. Two more parts follow: **Event Types And Event Details** covers the fields and common types of user and admin events, and **Failures And Transactions In Listeners** covers what happens when a listener fails and how to act after a commit.
 
 ## Learning objectives
 

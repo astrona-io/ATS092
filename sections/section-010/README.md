@@ -15,7 +15,7 @@ This section comes first because everything else in the course depends on it. A 
 
 ## The learning path
 
-Work through the module in order. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground, a cluster where you can explore freely.
+Work through the module in order. It has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground, a cluster where you can explore freely.
 
 ### 1. Build And Load Your First Keycloak Provider
 

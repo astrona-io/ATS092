@@ -243,3 +243,95 @@ questions:
         explanation: "Correct. The audit line shows `realm=inventory`."
     correct_option: d
     explanation: "Correct. The audit line shows `realm=inventory`."
+
+  - id: ats092-030-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Failure reason"
+    source_readings:
+      - sections/section-030/module-01/course-04-event-types-and-details.md
+    prompt: "Where does a listener find the reason of a failed sign-in?"
+    options:
+      - id: a
+        text: "In `event.getError()`."
+        explanation: "Correct. The error field holds a code such as `invalid_user_credentials`."
+      - id: b
+        text: "In `event.getType()`."
+        explanation: "Not correct. The type is `LOGIN_ERROR`."
+      - id: c
+        text: "In `event.getTime()`."
+        explanation: "Not correct. This is the time."
+      - id: d
+        text: "In `event.getRealmId()`."
+        explanation: "Not correct. This is the realm id."
+    correct_option: a
+    explanation: "Correct. The error field is set only on error events."
+
+  - id: ats092-030-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Unknown user"
+    source_readings:
+      - sections/section-030/module-01/course-04-event-types-and-details.md
+    prompt: "Why can `event.getUserId()` be `null` for `LOGIN_ERROR`?"
+    options:
+      - id: a
+        text: "The user name may not exist, so there is no user."
+        explanation: "Correct. The name is then in the details."
+      - id: b
+        text: "Keycloak removes user ids from error events."
+        explanation: "Not correct. Keycloak does not remove them."
+      - id: c
+        text: "User ids are only stored for admin events."
+        explanation: "Not correct. User events have user ids."
+      - id: d
+        text: "It is always `null`."
+        explanation: "Not correct. It is set for a known user."
+    correct_option: a
+    explanation: "Correct. A failed sign-in for an unknown name has no user id."
+
+  - id: ats092-030-q13
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Listener exception"
+    source_readings:
+      - sections/section-030/module-01/course-05-failures-and-transactions.md
+    prompt: "A listener throws an exception while a user signs in. What happens?"
+    options:
+      - id: a
+        text: "Keycloak logs an error and the sign-in continues."
+        explanation: "Correct. A listener cannot cancel the request."
+      - id: b
+        text: "The sign-in fails."
+        explanation: "Not correct. The request is not cancelled."
+      - id: c
+        text: "Keycloak removes the listener from the realm."
+        explanation: "Not correct. The realm settings do not change."
+      - id: d
+        text: "Keycloak restarts."
+        explanation: "Not correct. The server keeps running."
+    correct_option: a
+    explanation: "Correct. A listener failure is quiet and only visible in the log."
+
+  - id: ats092-030-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "After commit"
+    source_readings:
+      - sections/section-030/module-01/course-05-failures-and-transactions.md
+    prompt: "How can a listener act only after the surrounding change is saved?"
+    options:
+      - id: a
+        text: "It enlists an `EventListenerTransaction` with `enlistAfterCompletion`."
+        explanation: "Correct. The step runs after the transaction completes."
+      - id: b
+        text: "It calls `Thread.sleep`."
+        explanation: "Not correct. This delays the request."
+      - id: c
+        text: "It writes to the log twice."
+        explanation: "Not correct. This does not wait for a commit."
+      - id: d
+        text: "It cannot, because events are sent after the commit."
+        explanation: "Not correct. A listener may run before the commit."
+    correct_option: a
+    explanation: "Correct. Use a transaction step for effects that are hard to undo."
