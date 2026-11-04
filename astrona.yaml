@@ -13,7 +13,7 @@
 training:
   id: ATS092
   title: "Keycloak: Development & SPI Customization"
-  maturity: draft
+  maturity: alpha
   description: >
     Training material covering the Keycloak Development & SPI Customization
     domain of the Keycloak training path: Service Provider Interfaces,
