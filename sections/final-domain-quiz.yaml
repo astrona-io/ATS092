@@ -378,3 +378,141 @@ questions:
         explanation: "Not correct. A browser cannot open this."
     correct_option: a
     explanation: "Correct. Use `url.resourcesPath` for every static file."
+
+  - id: ats092-final-q65
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Separate storing from listening"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-the-event-store-holds.md
+    prompt: "Which field of the event configuration makes a realm save user events in its database?"
+    options:
+      - id: a
+        text: "`eventsListeners`"
+        explanation: "Not correct. It lists the listeners that receive events."
+      - id: b
+        text: "`eventsEnabled`"
+        explanation: "Correct. It turns on storing of user events."
+      - id: c
+        text: "`adminEventsDetailsEnabled`"
+        explanation: "Not correct. It adds the representation to admin events."
+      - id: d
+        text: "`eventsExpiration`"
+        explanation: "Not correct. It sets how long stored events live."
+    correct_option: b
+    explanation: "Correct. `eventsEnabled` stores user events; listeners are a separate setting."
+
+  - id: ats092-final-q66
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict the effect of a list update"
+    source_readings:
+      - sections/section-030/module-02/course-02-choosing-what-to-store.md
+    prompt: "A realm stores `LOGIN` and `LOGIN_ERROR`. You run `kcadm update events/config -r inventory -s 'enabledEventTypes=[\"LOGIN_ERROR\"]'`. What does the realm store afterwards?"
+    options:
+      - id: a
+        text: "`LOGIN` and `LOGIN_ERROR`, because the update adds to the list."
+        explanation: "Not correct. The update does not add to the list."
+      - id: b
+        text: "Only `LOGIN`."
+        explanation: "Not correct. `LOGIN` is not in the new list."
+      - id: c
+        text: "Only `LOGIN_ERROR`."
+        explanation: "Correct. The new list replaces the old one."
+      - id: d
+        text: "Nothing, because the list must hold two types."
+        explanation: "Not correct. A list can hold one type."
+    correct_option: c
+    explanation: "Correct. `enabledEventTypes` is replaced, so name every type to keep."
+
+  - id: ats092-final-q67
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Use the unit of the expiration"
+    source_readings:
+      - sections/section-030/module-02/course-04-expiring-and-clearing-events.md
+    prompt: "You want stored user events to live for one day. Which value do you give `eventsExpiration`?"
+    options:
+      - id: a
+        text: "`1`"
+        explanation: "Not correct. The value is not in days."
+      - id: b
+        text: "`24`"
+        explanation: "Not correct. The value is not in hours."
+      - id: c
+        text: "`1440`"
+        explanation: "Not correct. The value is not in minutes."
+      - id: d
+        text: "`86400`"
+        explanation: "Correct. The value is in seconds."
+    correct_option: d
+    explanation: "Correct. `eventsExpiration` is a number of seconds."
+
+  - id: ats092-final-q68
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Diagnose a flat mount"
+    source_readings:
+      - sections/section-040/module-02/course-02-changing-email-text-from-a-configmap.md
+    prompt: "Keycloak does not list the email theme `inventory`. `find /opt/keycloak/themes/inventory` shows `theme.properties` and `messages_en.properties` side by side. What is wrong?"
+    options:
+      - id: a
+        text: "The ConfigMap is too large."
+        explanation: "Not correct. Size is not the cause."
+      - id: b
+        text: "The volume has no `items`, so the keys are in one flat folder."
+        explanation: "Correct. Keycloak needs `email/theme.properties` and `email/messages/messages_en.properties`."
+      - id: c
+        text: "The realm has no `emailTheme`."
+        explanation: "Not correct. Keycloak lists a theme before a realm selects it."
+      - id: d
+        text: "Keycloak needs a JAR for every theme."
+        explanation: "Not correct. A directory works."
+    correct_option: b
+    explanation: "Correct. The `items` list gives each key a path."
+
+  - id: ats092-final-q69
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Avoid a missing-value error"
+    source_readings:
+      - sections/section-040/module-02/course-03-email-templates.md
+    prompt: "A template prints `${user.firstName}` and a user has no first name. What happens?"
+    options:
+      - id: a
+        text: "It prints an empty string."
+        explanation: "Not correct. FreeMarker does not do that by default."
+      - id: b
+        text: "It prints `null`."
+        explanation: "Not correct. FreeMarker does not print `null`."
+      - id: c
+        text: "The template stops with an error, unless a default such as `${user.firstName!\"\"}` is given."
+        explanation: "Correct. The operator `!` gives a default."
+      - id: d
+        text: "Keycloak uses the realm name instead."
+        explanation: "Not correct. Keycloak does not substitute a value."
+    correct_option: c
+    explanation: "Correct. Give optional values a default with `!`."
+
+  - id: ats092-final-q70
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Understand the account console"
+    source_readings:
+      - sections/section-040/module-02/course-04-the-account-theme-and-languages.md
+    prompt: "Why can you not override a page of the account console `keycloak.v3` by writing an `.ftl` file?"
+    options:
+      - id: a
+        text: "Account themes cannot have parents."
+        explanation: "Not correct. They can inherit with `parent`."
+      - id: b
+        text: "The account console reads only the database."
+        explanation: "Not correct. It reads through REST APIs."
+      - id: c
+        text: "`.ftl` files are only allowed in JAR files."
+        explanation: "Not correct. A directory also works."
+      - id: d
+        text: "The console is a single-page application, so it has no page templates to override."
+        explanation: "Correct. You change messages, style and resources."
+    correct_option: d
+    explanation: "Correct. The pages are drawn in the browser by an application."

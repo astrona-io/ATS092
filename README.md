@@ -28,8 +28,8 @@ contains:
 | --- | --- | --- | --- | --- |
 | [010](sections/section-010) | Service Provider Interfaces | 1 | 1 + capstone | Providers, factories, loading |
 | [020](sections/section-020) | Custom Authenticators | 1 | 1 + capstone | Authentication flows |
-| [030](sections/section-030) | Event Listeners | 1 | 1 + capstone | User and admin events |
-| [040](sections/section-040) | Themes With FreeMarker | 1 | 1 + capstone | Login theme |
+| [030](sections/section-030) | Event Listeners | 2 | 2 + capstone | User and admin events |
+| [040](sections/section-040) | Themes With FreeMarker | 2 | 2 + capstone | Login theme |
 
 The order starts with the mechanism and then builds on it. Section 010 teaches
 how Keycloak finds and loads any provider, because every later extension fails
@@ -47,7 +47,9 @@ JAR as providers.
 | 010-01 | [Build And Load Your First Keycloak Provider](sections/section-010/module-01/course.md) | 5 | [lab-01](sections/section-010/module-01/labs/lab-01) |
 | 020-01 | [Add A Custom Step To An Authentication Flow](sections/section-020/module-01/course.md) | 5 | [lab-01](sections/section-020/module-01/labs/lab-01) |
 | 030-01 | [Send Keycloak Events To Your Own Listener](sections/section-030/module-01/course.md) | 5 | [lab-01](sections/section-030/module-01/labs/lab-01) |
+| 030-02 | [Store, Query And Expire Keycloak Events](sections/section-030/module-02/course.md) | 5 | [lab-01](sections/section-030/module-02/labs/lab-01) |
 | 040-01 | [Change The Login Page With A Theme](sections/section-040/module-01/course.md) | 5 | [lab-01](sections/section-040/module-01/labs/lab-01) |
+| 040-02 | [Email And Account Themes](sections/section-040/module-02/course.md) | 5 | [lab-01](sections/section-040/module-02/labs/lab-01) |
 
 ---
 

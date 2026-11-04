@@ -1,0 +1,53 @@
+# Make Failed Sign-Ins Searchable
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-092-lab-030-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1, the provider and Maven volumes and the tester pod, and creates the realm inventory"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-092-lab-030-02-setup"
+      description: "Turns on event storing for the realm inventory, but only for the LOGIN type, with no expiration"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-store-settings"
+      description: "Confirms the realm stores LOGIN and LOGIN_ERROR events, expires them after 86400 seconds and keeps jboss-logging"
+      type: "file"
+      source: "validation/validate-store-settings.sh"
+    - name: "validate-failed-login-stored"
+      description: "Makes a failed sign-in by alice and confirms a LOGIN_ERROR event is stored for it"
+      type: "file"
+      source: "validation/validate-failed-login-stored.sh"
+    - name: "validate-admin-events-stored"
+      description: "Confirms admin events are stored with their representation, and that a change to a client is stored as an admin event"
+      type: "file"
+      source: "validation/validate-admin-events-stored.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - maven:3.9.15-eclipse-temurin-21
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1

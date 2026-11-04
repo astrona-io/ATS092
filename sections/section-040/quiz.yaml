@@ -335,3 +335,233 @@ questions:
         explanation: "Not correct. No image change is needed."
     correct_option: a
     explanation: "Correct. The theme lists the locales and the realm enables them."
+
+  - id: ats092-040-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know the theme folder"
+    source_readings:
+      - sections/section-040/module-02/course-01-email-theme-anatomy.md
+    prompt: "Where does Keycloak read the messages of an email theme named `inventory`?"
+    options:
+      - id: a
+        text: "`/opt/keycloak/themes/inventory/login/messages/`"
+        explanation: "Not correct. That is the folder of a login theme."
+      - id: b
+        text: "`/opt/keycloak/themes/inventory/email/messages/`"
+        explanation: "Correct. The folder name is the theme type."
+      - id: c
+        text: "`/opt/keycloak/themes/email/inventory/`"
+        explanation: "Not correct. The theme name comes first."
+      - id: d
+        text: "`/opt/keycloak/providers/inventory/`"
+        explanation: "Not correct. That folder is for provider JAR files."
+    correct_option: b
+    explanation: "Correct. An email theme lives below `<theme name>/email/`."
+
+  - id: ats092-040-q16
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the files of one mail"
+    source_readings:
+      - sections/section-040/module-02/course-01-email-theme-anatomy.md
+    prompt: "Which files does Keycloak use for the password reset email?"
+    options:
+      - id: a
+        text: "Only `email/html/password-reset.ftl`."
+        explanation: "Not correct. The text version is needed too."
+      - id: b
+        text: "Only a message file."
+        explanation: "Not correct. The templates come from a parent theme if the theme has none."
+      - id: c
+        text: "`email/html/password-reset.ftl` and `email/text/password-reset.ftl`."
+        explanation: "Correct. Every mail is sent as HTML and as plain text."
+      - id: d
+        text: "`email/password-reset.html`."
+        explanation: "Not correct. Keycloak does not use that file."
+    correct_option: c
+    explanation: "Correct. A mail has an HTML template and a plain-text template."
+
+  - id: ats092-040-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell the theme from the mail server"
+    source_readings:
+      - sections/section-040/module-02/course-01-email-theme-anatomy.md
+    prompt: "A realm uses a custom email theme, but no mail arrives. Which setting decides whether a mail can be sent at all?"
+    options:
+      - id: a
+        text: "`emailTheme`"
+        explanation: "Not correct. It changes only the content."
+      - id: b
+        text: "`smtpServer`"
+        explanation: "Correct. It holds the host, port and sender."
+      - id: c
+        text: "`accountTheme`"
+        explanation: "Not correct. It styles the account console."
+      - id: d
+        text: "`defaultLocale`"
+        explanation: "Not correct. It chooses the language."
+    correct_option: b
+    explanation: "Correct. The theme changes the content; the mail server settings decide whether a mail leaves."
+
+  - id: ats092-040-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Diagnose a flat mount"
+    source_readings:
+      - sections/section-040/module-02/course-02-changing-email-text-from-a-configmap.md
+    prompt: "Keycloak does not list the email theme `inventory`. `find /opt/keycloak/themes/inventory` shows `theme.properties` and `messages_en.properties` side by side. What is wrong?"
+    options:
+      - id: a
+        text: "The ConfigMap is too large."
+        explanation: "Not correct. Size is not the cause."
+      - id: b
+        text: "The volume has no `items`, so the keys are in one flat folder."
+        explanation: "Correct. Keycloak needs `email/theme.properties` and `email/messages/messages_en.properties`."
+      - id: c
+        text: "The realm has no `emailTheme`."
+        explanation: "Not correct. Keycloak lists a theme before a realm selects it."
+      - id: d
+        text: "Keycloak needs a JAR for every theme."
+        explanation: "Not correct. A directory works."
+    correct_option: b
+    explanation: "Correct. The `items` list gives each key a path."
+
+  - id: ats092-040-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the smallest change"
+    source_readings:
+      - sections/section-040/module-02/course-02-changing-email-text-from-a-configmap.md
+    prompt: "The team wants only a new subject for the password reset mail. What is the smallest change?"
+    options:
+      - id: a
+        text: "Copy both templates and edit them."
+        explanation: "Not correct. That is more than needed."
+      - id: b
+        text: "Write a JAR with a new provider."
+        explanation: "Not correct. A theme needs no provider."
+      - id: c
+        text: "Change the realm's `smtpServer`."
+        explanation: "Not correct. That is the mail server."
+      - id: d
+        text: "Override `passwordResetSubject` in `messages_en.properties` of an email theme."
+        explanation: "Correct. One message key changes the subject."
+    correct_option: d
+    explanation: "Correct. Override the message and inherit everything else."
+
+  - id: ats092-040-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Predict the fallback"
+    source_readings:
+      - sections/section-040/module-02/course-02-changing-email-text-from-a-configmap.md
+    prompt: "A realm sets `emailTheme` to `inventory`, but Keycloak does not have a theme with that name. What happens?"
+    options:
+      - id: a
+        text: "The realm falls back to the default email theme."
+        explanation: "Correct. The realm uses the default theme."
+      - id: b
+        text: "Keycloak refuses to start."
+        explanation: "Not correct. The server starts."
+      - id: c
+        text: "Keycloak deletes the setting."
+        explanation: "Not correct. The field stays as it is."
+      - id: d
+        text: "Every mail fails."
+        explanation: "Not correct. Mails use the default theme."
+    correct_option: a
+    explanation: "Correct. A missing theme gives the default theme, so the change seems to have no effect."
+
+  - id: ats092-040-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pick the right layout elements"
+    source_readings:
+      - sections/section-040/module-02/course-03-email-templates.md
+    prompt: "What does `?no_esc` do in `${kcSanitize(msg(\"passwordResetBodyHtml\", ...))?no_esc}`?"
+    options:
+      - id: a
+        text: "It removes the message from the mail."
+        explanation: "Not correct. The message stays."
+      - id: b
+        text: "It stops FreeMarker from escaping the markup of the message a second time."
+        explanation: "Correct. `kcSanitize` has already removed unsafe markup."
+      - id: c
+        text: "It turns the HTML into plain text."
+        explanation: "Not correct. The plain-text mail has its own template."
+      - id: d
+        text: "It skips the language lookup."
+        explanation: "Not correct. `msg` still uses the language."
+    correct_option: b
+    explanation: "Correct. The sanitised markup is printed as markup."
+
+  - id: ats092-040-q22
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Avoid a missing-value error"
+    source_readings:
+      - sections/section-040/module-02/course-03-email-templates.md
+    prompt: "A template prints `${user.firstName}` and a user has no first name. What happens?"
+    options:
+      - id: a
+        text: "It prints an empty string."
+        explanation: "Not correct. FreeMarker does not do that by default."
+      - id: b
+        text: "It prints `null`."
+        explanation: "Not correct. FreeMarker does not print `null`."
+      - id: c
+        text: "The template stops with an error, unless a default such as `${user.firstName!\"\"}` is given."
+        explanation: "Correct. The operator `!` gives a default."
+      - id: d
+        text: "Keycloak uses the realm name instead."
+        explanation: "Not correct. Keycloak does not substitute a value."
+    correct_option: c
+    explanation: "Correct. Give optional values a default with `!`."
+
+  - id: ats092-040-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Understand the account console"
+    source_readings:
+      - sections/section-040/module-02/course-04-the-account-theme-and-languages.md
+    prompt: "Why can you not override a page of the account console `keycloak.v3` by writing an `.ftl` file?"
+    options:
+      - id: a
+        text: "Account themes cannot have parents."
+        explanation: "Not correct. They can inherit with `parent`."
+      - id: b
+        text: "The account console reads only the database."
+        explanation: "Not correct. It reads through REST APIs."
+      - id: c
+        text: "`.ftl` files are only allowed in JAR files."
+        explanation: "Not correct. A directory also works."
+      - id: d
+        text: "The console is a single-page application, so it has no page templates to override."
+        explanation: "Correct. You change messages, style and resources."
+    correct_option: d
+    explanation: "Correct. The pages are drawn in the browser by an application."
+
+  - id: ats092-040-q24
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Turn on languages"
+    source_readings:
+      - sections/section-040/module-02/course-04-the-account-theme-and-languages.md
+    prompt: "Which three realm fields turn on a language choice with English and Danish?"
+    options:
+      - id: a
+        text: "`internationalizationEnabled`, `supportedLocales` and `defaultLocale`"
+        explanation: "Correct. They enable the choice, list the codes and set the default."
+      - id: b
+        text: "`emailTheme`, `accountTheme` and `loginTheme`"
+        explanation: "Not correct. Those select themes."
+      - id: c
+        text: "`eventsEnabled`, `eventsExpiration` and `eventsListeners`"
+        explanation: "Not correct. Those are event settings."
+      - id: d
+        text: "`smtpServer`, `sslRequired` and `enabled`"
+        explanation: "Not correct. They do not concern languages."
+    correct_option: a
+    explanation: "Correct. Languages are a realm setting that every theme type reads."

@@ -12,10 +12,12 @@ This section teaches you to write your own listener and to make a realm use it. 
 - How a realm turns listeners on with its event configuration, next to `jboss-logging`.
 - How to turn admin events on, and how to see an admin change in your own listener.
 - How to prove a listener works with a real sign-in and a line in `kubectl logs`.
+- How the realm's event store keeps events in its database, which event types and admin event details to store, and how to query them with filters.
+- How to expire stored events and how to clear them.
 
 ## The learning path
 
-Work through the module in order. It has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
+Work through the modules in order. Each has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
 
 ### 1. Send Keycloak Events To Your Own Listener
 
@@ -25,6 +27,16 @@ The playground runs Keycloak 26.8.1 in the namespace `events-demo`, with the rea
 2. Writing An Event Listener
 3. Enabling A Listener In A Realm, followed by the lab **Log Every Login With A Custom Listener**
 4. Summary
+
+### 2. Store, Query And Expire Keycloak Events
+
+The playground runs Keycloak 26.8.1 in the namespace `events-demo`, with the realm `inventory`, the user `alice` and the client `inventory-cli`.
+
+1. What The Event Store Holds
+2. Choosing What To Store
+3. Querying Stored Events, followed by the lab **Make Failed Sign-Ins Searchable**
+4. Expiring And Clearing Events
+5. Summary
 
 ## Section capstone: Audit Admin Changes With A Custom Listener
 

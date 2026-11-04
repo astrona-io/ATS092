@@ -12,10 +12,12 @@ This section teaches the parts of a theme that matter in practice: the theme typ
 - How to deliver a theme as a directory under `/opt/keycloak/themes`, mounted from a ConfigMap.
 - How to pack a theme in a JAR with `META-INF/keycloak-themes.json`, next to providers.
 - How to select a theme for a realm and prove it with the login page.
+- How an email theme is laid out, how to change a mail subject from a ConfigMap, and how the HTML and text templates work.
+- Why the account console is a single-page application, and how to turn on languages for a realm.
 
 ## The learning path
 
-Work through the module in order. It has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
+Work through the modules in order. Each has a landing page, five short parts, a graded lab right after the part it tests, and a summary. The landing page starts the module's playground.
 
 ### 1. Change The Login Page With A Theme
 
@@ -25,6 +27,16 @@ The playground runs Keycloak 26.8.1 in the namespace `themes-demo`, with the rea
 2. A Theme In A Mounted Directory, followed by the lab **Brand The Login Page With A Mounted Theme**
 3. Packaging A Theme In A JAR
 4. Summary
+
+### 2. Email And Account Themes
+
+The playground runs Keycloak 26.8.1 in the namespace `themes-demo`, with the realm `inventory`.
+
+1. Email Theme Anatomy
+2. Changing Email Text From A ConfigMap, followed by the lab **Fix An Email Theme That Keycloak Cannot Find**
+3. Email Templates
+4. The Account Theme And Languages
+5. Summary
 
 ## Section capstone: Ship A Theme And A Listener In One JAR
 

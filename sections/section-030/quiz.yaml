@@ -335,3 +335,233 @@ questions:
         explanation: "Not correct. A listener may run before the commit."
     correct_option: a
     explanation: "Correct. Use a transaction step for effects that are hard to undo."
+
+  - id: ats092-030-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Separate storing from listening"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-the-event-store-holds.md
+    prompt: "Which field of the event configuration makes a realm save user events in its database?"
+    options:
+      - id: a
+        text: "`eventsListeners`"
+        explanation: "Not correct. It lists the listeners that receive events."
+      - id: b
+        text: "`eventsEnabled`"
+        explanation: "Correct. It turns on storing of user events."
+      - id: c
+        text: "`adminEventsDetailsEnabled`"
+        explanation: "Not correct. It adds the representation to admin events."
+      - id: d
+        text: "`eventsExpiration`"
+        explanation: "Not correct. It sets how long stored events live."
+    correct_option: b
+    explanation: "Correct. `eventsEnabled` stores user events; listeners are a separate setting."
+
+  - id: ats092-030-q16
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the two stores"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-the-event-store-holds.md
+    prompt: "A realm has `adminEventsEnabled` set to `true` and `eventsEnabled` set to `false`. What does it store?"
+    options:
+      - id: a
+        text: "Only admin events."
+        explanation: "Correct. Each kind has its own switch."
+      - id: b
+        text: "Nothing, because both fields must be true."
+        explanation: "Not correct. The fields are independent."
+      - id: c
+        text: "Only user events."
+        explanation: "Not correct. User events need `eventsEnabled`."
+      - id: d
+        text: "Both kinds, because one field is enough."
+        explanation: "Not correct. Each kind needs its own field."
+    correct_option: a
+    explanation: "Correct. User events and admin events are stored separately."
+
+  - id: ats092-030-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict the effect of a list update"
+    source_readings:
+      - sections/section-030/module-02/course-02-choosing-what-to-store.md
+    prompt: "A realm stores `LOGIN` and `LOGIN_ERROR`. You run `kcadm update events/config -r inventory -s 'enabledEventTypes=[\"LOGIN_ERROR\"]'`. What does the realm store afterwards?"
+    options:
+      - id: a
+        text: "`LOGIN` and `LOGIN_ERROR`, because the update adds to the list."
+        explanation: "Not correct. The update does not add to the list."
+      - id: b
+        text: "Only `LOGIN`."
+        explanation: "Not correct. `LOGIN` is not in the new list."
+      - id: c
+        text: "Only `LOGIN_ERROR`."
+        explanation: "Correct. The new list replaces the old one."
+      - id: d
+        text: "Nothing, because the list must hold two types."
+        explanation: "Not correct. A list can hold one type."
+    correct_option: c
+    explanation: "Correct. `enabledEventTypes` is replaced, so name every type to keep."
+
+  - id: ats092-030-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the setting for the representation"
+    source_readings:
+      - sections/section-030/module-02/course-02-choosing-what-to-store.md
+    prompt: "Which field makes Keycloak save the JSON of the changed object with each admin event?"
+    options:
+      - id: a
+        text: "`adminEventsEnabled`"
+        explanation: "Not correct. It saves the event without the representation."
+      - id: b
+        text: "`eventsEnabled`"
+        explanation: "Not correct. It concerns user events."
+      - id: c
+        text: "`enabledEventTypes`"
+        explanation: "Not correct. It lists user event types."
+      - id: d
+        text: "`adminEventsDetailsEnabled`"
+        explanation: "Correct. It adds the representation to stored admin events."
+    correct_option: d
+    explanation: "Correct. Details are a separate switch because the representation can hold personal data."
+
+  - id: ats092-030-q19
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know when events are saved"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-the-event-store-holds.md
+    prompt: "You turn `eventsEnabled` on at noon. A user signed in at 11:00. Does the store hold that sign-in?"
+    options:
+      - id: a
+        text: "No. Only events after the change are saved."
+        explanation: "Correct. The store never saves events from before the change."
+      - id: b
+        text: "Yes. Keycloak copies the earlier events from the log."
+        explanation: "Not correct. Keycloak does not read the log."
+      - id: c
+        text: "Yes, but only for `LOGIN_ERROR`."
+        explanation: "Not correct. Nothing from before the change is saved."
+      - id: d
+        text: "Yes, after a restart."
+        explanation: "Not correct. A restart does not recover events."
+    correct_option: a
+    explanation: "Correct. The store holds only events that happen after the setting is on."
+
+  - id: ats092-030-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Filter by user"
+    source_readings:
+      - sections/section-030/module-02/course-03-querying-stored-events.md
+    prompt: "Which value does the `user` filter of the `events` path take?"
+    options:
+      - id: a
+        text: "The user name, such as `alice`."
+        explanation: "Not correct. The filter does not take a name."
+      - id: b
+        text: "The email address of the user."
+        explanation: "Not correct. The filter does not take an email address."
+      - id: c
+        text: "The id of the user."
+        explanation: "Correct. Read the id first, for example with `kcadm get users`."
+      - id: d
+        text: "The client id."
+        explanation: "Not correct. Use the `client` filter for that."
+    correct_option: c
+    explanation: "Correct. The `user` filter takes the id of the user."
+
+  - id: ats092-030-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find a failed sign-in"
+    source_readings:
+      - sections/section-030/module-02/course-03-querying-stored-events.md
+    prompt: "Which command lists the stored failed sign-ins of the realm `inventory`?"
+    options:
+      - id: a
+        text: "`kcadm get events -r inventory -q type=LOGIN_ERROR`"
+        explanation: "Correct. A failed sign-in is the type `LOGIN_ERROR`."
+      - id: b
+        text: "`kcadm get events -r inventory -q error=true`"
+        explanation: "Not correct. There is no `error` filter."
+      - id: c
+        text: "`kcadm get admin-events -r inventory -q type=LOGIN`"
+        explanation: "Not correct. Admin events are changes, not sign-ins."
+      - id: d
+        text: "`kcadm get events/config -r inventory`"
+        explanation: "Not correct. That reads the configuration."
+    correct_option: a
+    explanation: "Correct. Use the `events` path with the type filter."
+
+  - id: ats092-030-q22
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read the realm ids of an admin event"
+    source_readings:
+      - sections/section-030/module-02/course-03-querying-stored-events.md
+    prompt: "An administrator signs in to the realm `master` and changes a client in the realm `inventory`. Which realm does the `realmId` of the stored admin event name?"
+    options:
+      - id: a
+        text: "`master`, the realm of the administrator."
+        explanation: "Not correct. That one is in `authDetails.realmId`."
+      - id: b
+        text: "`inventory`, the realm that changed."
+        explanation: "Correct. The event belongs to the realm that was changed."
+      - id: c
+        text: "Both, as a list."
+        explanation: "Not correct. The field holds one id."
+      - id: d
+        text: "Neither. The field is always empty."
+        explanation: "Not correct. The field is set."
+    correct_option: b
+    explanation: "Correct. `realmId` is the changed realm, and `authDetails` describes the caller."
+
+  - id: ats092-030-q23
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Use the unit of the expiration"
+    source_readings:
+      - sections/section-030/module-02/course-04-expiring-and-clearing-events.md
+    prompt: "You want stored user events to live for one day. Which value do you give `eventsExpiration`?"
+    options:
+      - id: a
+        text: "`1`"
+        explanation: "Not correct. The value is not in days."
+      - id: b
+        text: "`24`"
+        explanation: "Not correct. The value is not in hours."
+      - id: c
+        text: "`1440`"
+        explanation: "Not correct. The value is not in minutes."
+      - id: d
+        text: "`86400`"
+        explanation: "Correct. The value is in seconds."
+    correct_option: d
+    explanation: "Correct. `eventsExpiration` is a number of seconds."
+
+  - id: ats092-030-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know what deleting events removes"
+    source_readings:
+      - sections/section-030/module-02/course-04-expiring-and-clearing-events.md
+    prompt: "You run `kcadm delete events -r inventory`. What happens?"
+    options:
+      - id: a
+        text: "All stored user events of the realm are removed, and the server log is unchanged."
+        explanation: "Correct. The request has no filter and does not touch the log."
+      - id: b
+        text: "Only events older than `eventsExpiration` are removed."
+        explanation: "Not correct. The request removes all stored user events."
+      - id: c
+        text: "Events and the log lines of `jboss-logging` are removed."
+        explanation: "Not correct. The log is not part of the store."
+      - id: d
+        text: "The realm stops storing events."
+        explanation: "Not correct. The settings stay as they are."
+    correct_option: a
+    explanation: "Correct. The store is emptied; logs and settings are not changed."
