@@ -365,7 +365,7 @@ modules:
         difficulty: intermediate
         estimated_duration: 25m
         topic: event-store
-        task_kind: configuration
+        task_kind: troubleshooting
         tags: [events, event-store, admin-events, events-config, kcadm]
         learning_goals:
           - Store failed sign-ins next to successful ones
